@@ -1,0 +1,222 @@
+/* General Reset */
+body, h1, h2, h3, h4, h5, h6, p, a {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  /* Font Styling */
+  body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #FBFADA;
+    color: #12372A;
+    line-height: 1.6;
+  }
+  
+    /* Body Padding Adjustment */
+  body {
+    padding-bottom: 60px; /* This can be adjusted or removed */
+  }
+
+  /* Navbar Styles */
+  .navbar {
+    background-color: #12372A; /* Dark green background */
+    padding-left: 20px;
+    display: flex;
+    justify-content: space-between; /* Space between items */
+    align-items: center;
+    padding: 10px 20px; /* Adjusted for better spacing */
+  }
+  
+  .navbar a, .navbar .queueease {
+    color: #FBFADA; /* Light yellow text */
+    text-decoration: none;
+    font-size: 1.1rem; /* Slightly larger text for visibility */
+    display: flex;
+    align-items: center; /* Align text and icons */
+    padding: 8px 15px; /* Padding for better spacing */
+    transition: color 0.3s ease, transform 0.3s ease; /* Smooth color transition */
+  }
+  
+  .navbar a:hover, .navbar .queueease:hover {
+    color: #ADBC9F; /* Light green hover effect */
+    transform: scale(1.05); /* Slightly enlarge on hover */
+  }
+    
+
+  /* Centering Main Content */
+  .container-centered {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+  }
+  
+  /* Form Styling */
+  form.card {
+    background-color: #fff;
+    border-radius: 8px;
+    border: 1px solid #ADBC9F;
+    padding: 20px;
+  }
+  
+  form .form-label {
+    font-weight: 500;
+    color: #12372A;
+  }
+  
+  form input, form button {
+    margin-bottom: 15px;
+    width: 100%;
+  }
+  
+  form input[type="text"], form input[type="email"], form input[type="password"] {
+    padding: 10px;
+    border: 1px solid #436850;
+    border-radius: 4px;
+  }
+  
+  form button {
+    background-color: #436850;
+    color: #FBFADA;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 4px;
+  }
+  
+  form button:hover {
+    background-color: #12372A;
+    color: #FBFADA;
+  }
+  
+  /* Table Styling */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+  }
+  
+  table th, table td {
+    padding: 10px;
+    text-align: left;
+    vertical-align: middle;
+    border: 1px solid #ADBC9F;
+  }
+  
+  table th {
+    background-color: #12372A;
+    color: #FBFADA;
+    font-weight: 600;
+  }
+  
+  table tbody tr:hover {
+    background-color: #F4F4F4;
+  }
+  
+  /* Buttons */
+  button, .btn {
+    border-radius: 4px;
+  }
+  
+  button:hover, .btn:hover {
+    opacity: 0.9;
+  }
+  
+  /* Custom Colors */
+  .bg-primary {
+    background-color: #12372A !important;
+  }
+  
+  .bg-dark {
+    background-color: #436850 !important;
+  }
+  
+  .text-white {
+    color: #FBFADA !important;
+  }
+  
+  .btn-danger {
+    background-color: #DC3545;
+    border: none;
+  }
+  
+  .btn-light {
+    background-color: #F8F9FA;
+    border: none;
+  }
+  
+  /* Footer Styling */
+footer {
+  background-color: #12372A; /* Dark green */
+  color: #FBFADA; /* Light yellow text */
+  text-align: center;
+  padding: 15px;
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+  left: 0;
+  font-size: 14px;
+}
+
+footer a {
+  color: #ADBC9F; /* Light green */
+  text-decoration: none;
+}
+
+footer a:hover {
+  color: #FBFADA; /* Light yellow on hover */
+}
+
+/* General Mobile Responsiveness */
+@media (max-width: 768px) {
+  /* Stack form fields on smaller screens */
+  .form-label {
+    font-size: 0.9rem; /* Smaller font size for labels */
+  }
+
+  .form-control {
+    font-size: 0.9rem; /* Adjust font size in input fields */
+  }
+
+  .navbar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* Make the header text more readable */
+  header .navbar a {
+    font-size: 1.1rem;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
+  /* Stack the tables vertically for mobile */
+  table thead {
+    font-size: 0.9rem;
+  }
+
+  table th, table td {
+    font-size: 0.9rem; /* Adjust text size in tables */
+    padding: 8px; /* Smaller padding for smaller screens */
+  }
+
+  /* Adjust form layout to stack inputs on smaller screens */
+  .row.mb-3 {
+    flex-direction: column; /* Stack the form fields vertically */
+  }
+
+  .col-md-6, .col-md-3 {
+    width: 100% !important; /* Force columns to be 100% width */
+  }
+
+  /* Footer adjustment for mobile screens */
+  footer {
+    font-size: 0.85rem;
+    padding: 10px;
+  }
+}

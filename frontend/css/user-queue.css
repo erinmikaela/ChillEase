@@ -1,0 +1,199 @@
+/* General Body Styling */
+body {
+    background-color: #FBFADA; /* Light background color */
+    font-family: 'Poppins', sans-serif; /* Clean font for readability */
+    padding-bottom: 60px; /* Adds space for footer */
+    margin: 0; /* Remove any default margin */
+    display: flex;
+    justify-content: center; /* Center content horizontally */
+    align-items: flex-start; /* Align items at the top of the screen */
+    min-height: 100vh;
+    flex-direction: column; /* Stack content vertically */
+  }
+  
+  /* Navbar Styles */
+  .navbar {
+    background: linear-gradient(90deg, #12372A, #1A5E3A); /* Gradient background */
+    position: fixed; /* Make navbar stay at the top */
+    width: 100%; /* Ensure it spans the full width */
+    top: 0;
+    left: 0;
+    z-index: 1000; /* Keep navbar above other content */
+    height: 60px; /* Set height for the navbar */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px; /* Adjust padding */
+  }
+  
+  /* Back Link Styling */
+  .navbar a {
+    color: #FBFADA; /* Light yellow text */
+    text-decoration: none;
+    font-size: 1rem; /* Slightly larger text for visibility */
+    display: flex;
+    align-items: center; /* Align text and icons */
+    padding: 8px 15px; /* Padding for better spacing */
+    transition: color 0.3s ease, transform 0.3s ease; /* Smooth color transition */
+  }
+  
+  /* Hover effects for the navbar */
+  .navbar a:hover {
+    color: #ADBC9F; /* Light green hover effect */
+    transform: scale(1.05); /* Slightly enlarge on hover */
+  }
+  
+  /* QueueEase text with logo */
+  .queueease {
+    display: flex;
+    align-items: center;
+    font-size: 1.25rem; /* Adjust font size */
+    color: #FBFADA; /* Light yellow text */
+  }
+  
+  /* Logo Styling */
+  .navbar-logo {
+    height: 40px; /* Adjust logo height */
+    width: auto; /* Maintain aspect ratio */
+    margin-right: 7px; /* Space between logo and text */
+  }
+  
+  /* Icon Styling in Navbar */
+  .navbar a i, .navbar .queueease i {
+    margin-right: 8px; /* Add space between icon and text */
+    color: inherit; /* Ensures icon color matches the text */
+    transition: color 0.3s ease, transform 0.3s ease; /* Smooth color transition */
+  }
+  
+  /* Hover effect for navbar icons */
+  .navbar a:hover i, .navbar .queueease:hover i {
+    color: #ADBC9F; /* Light green color for icons on hover */
+    transform: scale(1.1); /* Slightly enlarge icon on hover */
+  }
+  
+  /* Queue Status Section Styling */
+  .queue-section {
+    background-color: #ADBC9F;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+  }
+  
+  .queue-section:hover {
+    background-color: #9ea07e; /* Darker on hover */
+  }
+  
+  .queue-section h2 {
+    color: #12372A;
+    font-weight: 600;
+  }
+  
+  .queue-status p {
+    font-size: 16px;
+    color: #12372A;
+    line-height: 1.6;
+  }
+  
+  /* Main Content Styling */
+  main {
+    width: 90%; /* Make content take up 90% of the screen width */
+    max-width: 1400px; /* Ensure it doesn't grow too wide */
+    margin: 0 auto;
+    padding: 20px;
+    padding-top: 6%;
+    flex-grow: 1;
+  }
+  
+  /* Join Queue Section Styling */
+  .join-queue-section {
+    background-color: #ADBC9F;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+  }
+  
+  .join-queue-section:hover {
+    background-color: #9ea07e;
+  }
+  
+  .join-queue-section h2 {
+    color: #12372A;
+    font-weight: 600;
+  }
+  
+  form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  label {
+    color: #12372A;
+    font-size: 14px;
+    margin-bottom: 8px;
+  }
+  
+  .form-select, .btn-custom {
+    margin-top: 10px;
+  }
+  
+  .btn-custom {
+    background-color: #436850;
+    color: #FBFADA;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .btn-custom:hover {
+    background-color: #12372A;
+  }
+  
+  /* Footer Styling */
+  footer {
+    background-color: #12372A; /* Correct dark green color */
+    color: #FBFADA; /* Light text color for contrast */
+    text-align: center;
+    padding: 15px;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+    font-size: 14px;
+  }
+  
+  footer a {
+    color: #ADBC9F;
+    text-decoration: none;
+  }
+  
+  footer a:hover {
+    color: #FBFADA;
+  }
+  
+  /* Responsive Design for Smaller Screens */
+  @media (max-width: 768px) {
+    .container {
+      padding: 20px;
+      width: 90%;
+    }
+  
+    .queue-section, .join-queue-section {
+      padding: 15px;
+    }
+  
+    main {
+      padding-top: 20px; /* Adjust top padding for better spacing */
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .queueease {
+      font-size: 0.5rem; /* Adjust font size for mobile */
+      justify-content: center; /* Center the content */
+    }
+  }
+  

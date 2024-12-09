@@ -1,0 +1,154 @@
+/* General Body Styling */
+body {
+    background-color: #FBFADA; /* Light background color */
+    font-family: 'Poppins', sans-serif; /* Clean font for readability */
+    padding-bottom: 60px; /* Adds space for footer */
+    margin: 0; /* Remove any default margin */
+    display: flex;
+    justify-content: center; /* Center content horizontally */
+    align-items: flex-start; /* Align items at the top of the screen */
+    min-height: 100vh;
+    flex-direction: column; /* Stack content vertically */
+  }
+  
+  /* Navbar Styles */
+  .navbar {
+    background-color: #12372A;
+    position: fixed; /* Make navbar stay at the top */
+    width: 100%; /* Ensure it spans the full width */
+    top: 0;
+    left: 0;
+    z-index: 1000; /* Keep navbar above other content */
+    height: 60px; /* Set height for the navbar */
+  }
+
+  .navbar a, .navbar .queueease {
+    color: #FBFADA; /* Light yellow text */
+    text-decoration: none;
+    font-size: 1.1rem; /* Slightly larger text for visibility */
+    display: flex;
+    align-items: center; /* Align text and icons */
+    padding: 8px 15px; /* Padding for better spacing */
+    transition: color 0.3s ease, transform 0.3s ease; /* Smooth color transition */
+  }
+
+  .navbar a:hover, .navbar .queueease:hover {
+    color: #ADBC9F; /* Light green hover effect */
+    transform: scale(1.05); /* Slightly enlarge on hover */
+  }
+
+  /* Icon Styling in Navbar */
+  .navbar a i, .navbar .queueease i {
+    margin-right: 8px; /* Add space between icon and text */
+    color: inherit; /* Ensures icon color matches the text */
+    transition: color 0.3s ease, transform 0.3s ease; /* Smooth color transition */
+  }
+
+  /* Hover effect for navbar icons */
+  .navbar a:hover i, .navbar .queueease:hover i {
+    color: #ADBC9F; /* Light green color for icons on hover */
+    transform: scale(1.1); /* Slightly enlarge icon on hover */
+  }
+    
+    /* Centering Container */
+  .container-centered {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh; /* Full height of the viewport */
+      width: 100%; /* Full width of the viewport */
+      margin: 0; /* Remove any margins */
+      padding: 0; /* Remove padding for accurate centering */
+    }
+  
+  
+  .content-container {
+    background-color: #ADBC9F; /* Light background color */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.486); /* Add shadow for depth */
+    padding: 30px;
+    max-width: 600px; /* Limit width for better focus */
+    width: 100%; /* Make it responsive */
+    text-align: center;
+  }
+
+  .content-container:hover {
+    color: #12372A; 
+    transform: scale(1.05); /* Slightly enlarge on hover */
+  }
+
+
+  
+  .content-container h1 {
+    color: #12372A; /* Dark green color */
+    margin-bottom: 20px;
+  }
+  
+  #notificationsContainer {
+    background-color: #ffffff; /* Match card styling */
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    max-height: 300px; /* Limit height with scroll */
+    overflow-y: auto; /* Add scrolling for overflow */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  #notificationsContainer p {
+    color: #12372A;
+  }
+  
+  #seeAllBtn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #436850;
+    color: #FBFADA;
+    border: none;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+  }
+  
+  #seeAllBtn:hover {
+    background-color: #12372A;
+  }
+  
+  /* Footer Styling */
+  footer {
+    background-color: #12372A; /* Dark green color */
+    color: #FBFADA; /* Light text color */
+    text-align: center;
+    padding: 15px;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+    font-size: 14px;
+  }
+  
+  footer a {
+    color: #ADBC9F;
+    text-decoration: none;
+  }
+  
+  footer a:hover {
+    color: #FBFADA;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .content-container {
+      padding: 20px;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    #notificationsContainer {
+      max-height: 200px; /* Limit max height for smaller screens */
+      padding: 10px; /* Reduce padding */
+    }
+  
+    #seeAllBtn {
+      padding: 8px 16px; /* Adjust button padding for better mobile feel */
+    }
+  }
+  

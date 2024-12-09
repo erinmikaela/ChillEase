@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Transaction</title>
+</head>
+<body>
+  <h1>Create Transaction</h1>
+  
+  <form id="createTransactionForm">
+    <label for="user_id">User ID:</label>
+    <input type="number" id="user_id" name="user_id" required><br><br>
+
+    <label for="service_id">Service ID:</label>
+    <input type="number" id="service_id" name="service_id" required><br><br>
+
+    <button type="submit">Submit</button>
+  </form>
+
+  <h2>Response:</h2>
+  <pre id="response"></pre>
+
+  <script>
+    document.getElementById('createTransactionForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const userId = document.getElementById('user_id').value;
+      const serviceId = document.getElementById('service_id').value;
+
+      const transactionData = {
+        user_id: userId,
+        service_id: serviceId
+      };
+
+      fetch('http://localhost:5000/api/admin/transactions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(transactionData)
+      })
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById('response').textContent = JSON.stringify(data, null, 2);
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Queue Management | QueueEase</title>
+
+		<!-- Google Font: Poppins -->
+		<link
+			href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
+			rel="stylesheet"
+		/>
+
+		<!-- Bootstrap CSS -->
+		<link
+			href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+			rel="stylesheet"
+		/>
+
+		<!-- Font Awesome for icons -->
+		<link
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+			rel="stylesheet"
+		/>
+
+		<!-- Custom Stylesheet -->
+		<link rel="stylesheet" href="css/queue-management.css" />
+
+		<style>
+			/* Highlight the first row of the live queue table */
+			#queueTable tr:first-child {
+				border: 1px solid #e1e1e1;
+				font-weight: bold; /* Make the first row bold for emphasis */
+				background-color: #bcefc9; /* Optional: Add a light background color */
+			}
+		</style>
+
+		<script src="/socket.io/socket.io.js"></script>
+		<script
+			type="text/javascript"
+			src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"
+		></script>
+		<script type="text/javascript">
+			(function () {
+				emailjs.init("_3-17_pX9sbhDPRK0");
+			})();
+		</script>
+		<script>
+			const socket = io();
+
+			// Initzialize variables for completed transactions
+			let completedTransactions = [];
+			let showingAllCompleted = false; // Flag to track whether all completed transactions are shown
+
+			// Function to dynamically update queue statistics
+			function updateQueueStats(queue) {
+				const queueStats = document.getElementById("queueStats");
+				if (queue.length > 0) {
+					const firstQueue = queue[0];
+					const nextQueue = queue.length > 1 ? queue[1] : null;
+
+					queueStats.innerHTML = ` 
+          <p><strong><i class="fas fa-user-clock"></i> Currently Serving:</strong> Queue #${
+						firstQueue.queue_number
+					}</p>
+          <p><strong><i class="fas fa-user-plus"></i> Next in Line::</strong> ${
+						nextQueue ? `Queue #${nextQueue.queue_number}` : "None"
+					}</p>
+          <p><strong><i class="fas fa-users"></i> Users in Line:</strong> ${
+						queue.length
+					}</p>
+        `;
+				} else {
+					queueStats.innerHTML = "<p>No users in the queue.</p>";
+				}
+			}
+
+			// Function to populate the live queue table dynamically
+			function populateQueueTable(queue) {
+				const queueTable = document.getElementById("queueTable");
+				queueTable.innerHTML = ""; // Clear existing rows
+
+				queue.forEach((item) => {
+					const row = document.createElement("tr");
+					row.id = `queueRow-${item.queue_number}`;
+					row.innerHTML = `
+          <td>${item.queue_number}</td>
+          <td>${item.user_id}</td>
+          <td>${item.transaction_type}</td>
+          <td>${item.status || "waiting"}</td>
+          <td>
+            <button class="btn btn-warning" onclick="updateQueue(${
+							item.queue_number
+						}, 'prioritize')">In Progress</button>
+            <button class="btn btn-success" onclick="updateQueue(${
+							item.queue_number
+						}, 'complete')">Complete</button>
+            <button class="btn btn-danger" onclick="updateQueue(${
+							item.queue_number
+						}, 'cancel')">Cancel</button>
+          </td>
+        `;
+					queueTable.appendChild(row);
+				});
+			}
+
+			// Function to populate the completed transactions table dynamically
+			function populateCompletedTable() {
+				const completedTable = document.getElementById("completedTable");
+				completedTable.innerHTML = ""; // Clear existing rows
+
+				//Decide how many transactions to display based on the flag
+				let transactionsToDisplay = showingAllCompleted
+					? allCompletedTransactions
+					: allCompletedTransactions.slice(0, 10); // Show only the first 10 transactions
+
+				transactionsToDisplay.forEach((item) => {
+					const row = document.createElement("tr");
+					row.innerHTML = `
+          <td>${item.queue_number}</td>
+          <td>${item.user_id}</td>
+          <td>${item.transaction_type}</td>
+          <td>${item.status}</td>
+        `;
+					completedTable.appendChild(row);
+				});
+			}
+
+			// Update queue status via fetch API
+			async function updateQueue(queueNumber, action) {
+				try {
+					// Send PUT request to update the queue status
+					const response = await fetch(
+						`/api/admin/queue/${queueNumber}/${action}`,
+						{ method: "PUT" }
+					);
+
+					if (!response.ok) {
+						const errorData = await response.json();
+						throw new Error(errorData.error || "Failed to update queue.");
+					}
+
+					// Parse the response data
+					const data = await response.json();
+					console.log("Backend Response:", data);
+
+					// Check if notifications are present
+					if (data.notifications && Array.isArray(data.notifications)) {
+						// Iterate through each notification and send email
+						data.notifications.forEach((emailData) => {
+							if (
+								emailData.email &&
+								emailData.firstName &&
+								emailData.dynamicMessage
+							) {
+								sendEmailNotification(
+									emailData.email,
+									emailData.firstName,
+									emailData.dynamicMessage
+								);
+							} else {
+								console.warn(
+									"Email details missing in the notification:",
+									emailData
+								);
+							}
+						});
+					} else {
+						console.warn("No notifications found in the response.");
+					}
+
+					// Show alert based on action
+					if (action === "prioritize") {
+						alert(`Queue #${queueNumber} is now in progress.`);
+					} else if (action === "complete") {
+						alert(`Queue #${queueNumber} has been completed.`);
+					} else if (action === "cancel") {
+						alert(`Queue #${queueNumber} has been canceled.`);
+					}
+
+					// Notify server to refresh data
+					socket.emit("queueUpdated");
+				} catch (error) {
+					console.error("Error updating queue:", error);
+					alert("Error updating queue. Please try again.");
+				}
+			}
+
+			// Function to send the email using EmailJS
+			async function sendEmailNotification(toEmail, firstName, message) {
+				console.log("Preparing to send email to:", toEmail);
+				console.log("Name:", firstName);
+				console.log("Message:", message);
+				try {
+					const response = await emailjs.send(
+						"service_ectj92j",
+						"template_on7sfyq",
+						{
+							to_email: toEmail,
+							name: firstName,
+							message: message,
+						}
+					);
+					console.log("Email sent successfully:", response);
+				} catch (error) {
+					console.error("Error sending email:", error);
+				}
+			}
+
+			// Fetch and populate live queue
+			async function fetchLiveQueue() {
+				try {
+					const response = await fetch("/api/admin/queue/live");
+					const queue = await response.json();
+					populateQueueTable(queue);
+					updateQueueStats(queue);
+				} catch (error) {
+					console.error("Error fetching live queue:", error);
+				}
+			}
+
+			// Fetch and populate completed transactions
+			async function fetchCompletedTransactions() {
+				try {
+					const response = await fetch("/api/admin/queue/completed");
+					const completedTransactions = await response.json();
+					allCompletedTransactions = completedTransactions;
+
+					// Sort transactions by created_at descending (if available)
+					if (
+						allCompletedTransactions.length > 0 &&
+						allCompletedTransactions[0].created_at
+					) {
+						allCompletedTransactions.sort(
+							(a, b) => new Date(b.created_at) - new Date(a.created_at)
+						);
+					} else {
+						// If 'created_at' is not available, sort by 'queue_number' descending
+						allCompletedTransactions.sort(
+							(a, b) => b.queue_number - a.queue_number
+						);
+					}
+
+					populateCompletedTable();
+				} catch (error) {
+					console.error("Error fetching completed transactions:", error);
+				}
+			}
+
+			// Function to toggle between showing recent 10 and all completed transactions
+			function toggleCompletedTransactions() {
+				showingAllCompleted = !showingAllCompleted;
+				populateCompletedTable();
+				document.getElementById("toggleCompletedButton").textContent =
+					showingAllCompleted ? "Show Recent 10" : "See All";
+			}
+
+			// Real-time updates for queue
+			socket.on("queueUpdated", async () => {
+				await fetchLiveQueue();
+				await fetchCompletedTransactions();
+			});
+
+			// Auto-refresh queue and completed transactions every second
+			setInterval(async () => {
+				await fetchLiveQueue();
+				await fetchCompletedTransactions();
+			}, 5000);
+
+			// Initial fetch on page load
+			document.addEventListener("DOMContentLoaded", () => {
+				fetchLiveQueue();
+				fetchCompletedTransactions();
+			});
+
+			// ==========================
+			// New: Form to Create a Transaction (User Joining the Queue)
+			// ==========================
+			async function createTransaction(event) {
+				event.preventDefault();
+
+				const userId = document.getElementById("userId").value;
+				const serviceId = document.getElementById("serviceId").value;
+
+				if (!userId || !serviceId) {
+					alert("Please enter both User ID and Service ID.");
+					return;
+				}
+
+				try {
+					const response = await fetch("/api/admin/transactions", {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+						},
+						body: JSON.stringify({ user_id: userId, service_id: serviceId }),
+					});
+
+					if (!response.ok) {
+						const errorData = await response.json();
+						throw new Error(errorData.error || "Failed to create transaction.");
+					}
+
+					const data = await response.json();
+					console.log("Transaction Created Response:", data);
+
+					// Check if notifications are present
+					if (data.notifications && Array.isArray(data.notifications)) {
+						// Iterate through each notification and send email
+						data.notifications.forEach((emailData) => {
+							if (
+								emailData.email &&
+								emailData.firstName &&
+								emailData.dynamicMessage
+							) {
+								sendEmailNotification(
+									emailData.email,
+									emailData.firstName,
+									emailData.dynamicMessage
+								);
+							} else {
+								console.warn(
+									"Email details missing in the notification:",
+									emailData
+								);
+							}
+						});
+					} else {
+						console.warn("No notifications found in the response.");
+					}
+
+					alert("Transaction created and user notified successfully.");
+
+					// Reset the form
+					document.getElementById("createTransactionForm").reset();
+
+					// Refresh the queue
+					fetchLiveQueue();
+					fetchCompletedTransactions();
+				} catch (error) {
+					console.error("Error creating transaction:", error);
+					alert("Error creating transaction. Please try again.");
+				}
+			}
+		</script>
+	</head>
+
+	<body>
+		<!-- Navigation Bar -->
+		<nav class="navbar">
+			<a class="navbar-brand" href="admin-dashboard.html">
+				<i class="fas fa-arrow-left"></i> Go Back to Dashboard
+			</a>
+			<a class="navbar-text" href="#"> || QueueEase </a>
+		</nav>
+
+		<!-- Main Content -->
+		<main>
+			<section id="queueStats">
+				<!-- Queue statistics will load here dynamically -->
+			</section>
+
+			<section>
+				<h2>Create Transaction (User Joining the Queue)</h2>
+				<form id="createTransactionForm" onsubmit="createTransaction(event)">
+					<label for="userId">User ID:</label>
+					<input type="number" id="userId" name="userId" required />
+
+					<label for="serviceId">Service ID:</label>
+					<input type="number" id="serviceId" name="serviceId" required />
+
+					<button type="submit">Join Queue</button>
+				</form>
+			</section>
+
+			<section>
+				<h2><i class="fas fa-clipboard-list"></i> Live Queue</h2>
+				<table class="table table-bordered">
+					<thead>
+						<tr>
+							<th><i class="fas fa-layer-group"></i> Queue Number</th>
+							<th><i class="fas fa-user"></i> User ID</th>
+							<th><i class="fas fa-wallet"></i> Transaction Type</th>
+
+							<th><i class="fas fa-info-circle"></i> Status</th>
+							<th><i class="fas fa-cogs"></i> Actions</th>
+						</tr>
+					</thead>
+					<tbody id="queueTable">
+						<!-- Queue data will populate here dynamically -->
+					</tbody>
+				</table>
+			</section>
+
+			<section>
+				<h2><i class="fas fa-check-circle"></i> Completed Transactions</h2>
+				<button id="toggleCompletedButton" onclick="toggleCompletedTransactions()">See All</button>
+				<table class="table table-bordered">
+					<thead>
+						<tr>
+							<th><i class="fas fa-layer-group"></i> Queue Number</th>
+							<th><i class="fas fa-user"></i> User ID</th>
+							<th><i class="fas fa-tasks"></i> Transaction Type</th>
+							<th><i class="fas fa-info-circle"></i> Status</th>
+						</tr>
+					</thead>
+					<tbody id="completedTable">
+						<!-- Completed transactions data will populate here -->
+					</tbody>
+				</table>
+			</section>
+		</main>
+
+		<footer class="footer mt-5">2024 QueueEase. All rights reserved.</footer>
+
+		<!-- Bootstrap JS -->
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+	</body>
+</html>

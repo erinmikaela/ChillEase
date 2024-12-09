@@ -1,0 +1,72 @@
+<!-- backend/reports/report.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>QueueEase Reports</title>
+    <link rel="stylesheet" href="reportStyles.css">
+    <!-- Include Chart.js and ChartDataLabels Plugin -->
+     <!-- Font Awesome for icons -->
+		<link
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+        rel="stylesheet"
+    />
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+</head>
+<body>
+   <!-- Navigation Bar -->
+		<nav class="navbar">
+			<a class="navbar-brand" href="/admin-dashboard.html">
+				<i class="fas fa-arrow-left"></i> Go Back to Dashboard
+			</a>
+			<a class="navbar-text" href="#"> || QueueEase </a>
+		</nav>
+
+    <!-- Main Container -->
+    <div class="container">
+        <h1>QueueEase Reports</h1>
+        <form id="reportForm">
+            <label for="reportType">Report Type:</label>
+            <select id="reportType" name="reportType" required>
+                <option value="">--Select Report--</option>
+                <option value="service-utilization">Service Utilization Report</option>
+                <option value="user-registrations">User Registration Report</option>
+                <option value="daily-peak-times">Daily Peak Time Report</option>
+                <option value="transaction-status">Transaction Status Distribution Report</option>
+                <option value="service-usage-trends">Service-Specific Usage Trends Report</option>
+            </select>
+
+            <label for="period">Period:</label>
+            <select id="period" name="period" required>
+                <option value="">--Select Period--</option>
+                <option value="today">Today</option>
+                <option value="weekly">Last 7 Days</option>
+                <option value="monthly">Last 30 Days</option>
+                <option value="six-months">Last 6 Months</option>
+                <option value="annually">Last Year</option>
+                <option value="five-years">Last 5 Years</option>
+                <option value="ten-years">Last 10 Years</option>
+            </select>
+
+            <button type="button" onclick="generateReport()">Generate Report</button>
+        </form>
+
+        <div id="reportContent" style="display:none;">
+            <h2 id="reportTitle"></h2>
+            <div class="chart-container">
+                <canvas id="reportChart"></canvas>
+            </div>
+            <!-- Download PDF Button Removed as per request -->
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        © 2024 QueueEase. All rights reserved.
+    </footer>
+
+    <script src="reportScripts.js"></script>
+</body>
+</html>

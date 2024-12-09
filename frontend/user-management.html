@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Management | QueueEase</title>
+  <script src="/socket.io/socket.io.js"></script>
+  <!-- External Stylesheets -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+  
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+   
+   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  
+   <link rel="stylesheet" href="css/user-management.css">
+  
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io(); // Initialize WebSocket connection
+    let isEditing = false; // Flag to track if editing is in progress
+
+    // Function to load users and dynamically update the user and admin tables
+    async function loadUsers() {
+      if (isEditing) return; // Skip refreshing if editing is active
+      try {
+        const response = await fetch('/api/admin/users');
+        if (!response.ok) {
+          throw new Error('Failed to fetch users.');
+        }
+        const users = await response.json();
+
+        const usersTable = document.getElementById('usersTable');
+        const adminsTable = document.getElementById('adminsTable');
+        usersTable.innerHTML = ''; // Clear the users table
+        adminsTable.innerHTML = ''; // Clear the admins table
+
+        users.forEach(user => {
+          const row = document.createElement('tr');
+          if (user.role === 'admin') {
+            // Add admin row to the admins table
+            row.innerHTML = `
+              <td>${user.id}</td>
+              <td>${user.first_name}</td>
+              <td>${user.last_name}</td>
+              <td>${user.address}</td>
+              <td>${user.zip_code}</td>
+              <td>${user.contact_number}</td>
+              <td>${user.email}</td>
+            `;
+            adminsTable.appendChild(row);
+          } else {
+            // Add user row to the users table
+            row.innerHTML = `
+              <td>${user.id}</td>
+              <td contenteditable="true">${user.first_name}</td>
+              <td contenteditable="true">${user.last_name}</td>
+              <td contenteditable="true">${user.address}</td>
+              <td contenteditable="true">${user.zip_code}</td>
+              <td contenteditable="true">${user.contact_number}</td>
+              <td>${user.email}</td>
+              <td>
+                <button onclick="enableEdit(this)">Edit</button>
+                <button onclick="saveRow(${user.id}, this)" style="display: none;">Save</button>
+                <button onclick="deleteUser(${user.id})">Delete</button>
+              </td>
+            `;
+            usersTable.appendChild(row);
+          }
+        });
+      } catch (error) {
+        console.error('Error loading users:', error);
+      }
+    }
+
+    // Function to add or update a user
+    async function addUser(event) {
+      event.preventDefault();
+
+      const userForm = document.getElementById('userForm');
+      const formData = new FormData(userForm);
+      const userData = Object.fromEntries(formData.entries());
+      const id = userData.id;
+
+      const method = id ? 'PUT' : 'POST';
+      const url = id ? `/api/admin/users/${id}` : '/api/admin/users';
+
+      try {
+        const response = await fetch(url, {
+          method,
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(userData),
+        });
+
+        if (response.ok) {
+          alert('User saved successfully.');
+          resetForm();
+          socket.emit('usersUpdated'); // Notify other clients of the update
+        } else {
+          const result = await response.json();
+          alert(result.message || 'Failed to save user.');
+        }
+      } catch (error) {
+        console.error('Error saving user:', error);
+      }
+    }
+
+    // Enable edit mode for a row
+    function enableEdit(editButton) {
+      isEditing = true; // Set flag to true
+      const row = editButton.closest('tr');
+      row.querySelectorAll('td[contenteditable]').forEach(cell => {
+        cell.contentEditable = 'true';
+        cell.style.backgroundColor = '#fffbe6'; // Highlight editable cells
+      });
+
+      editButton.style.display = 'none'; // Hide Edit button
+      const saveButton = row.querySelector('button[onclick^="saveRow"]');
+      if (saveButton) saveButton.style.display = 'inline'; // Show Save button
+    }
+
+    // Save updates made to a user row
+    async function saveRow(id, button) {
+      const row = button.closest('tr');
+      const updatedData = {
+        first_name: row.children[1].textContent.trim(),
+        last_name: row.children[2].textContent.trim(),
+        address: row.children[3].textContent.trim(),
+        zip_code: row.children[4].textContent.trim(),
+        contact_number: row.children[5].textContent.trim(),
+        email: row.children[6].textContent.trim(),
+      };
+
+      try {
+        const response = await fetch(`/api/admin/users/${id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(updatedData),
+        });
+
+        if (response.ok) {
+          alert('User updated successfully.');
+          socket.emit('usersUpdated'); // Notify other clients of the update
+          isEditing = false; // Reset flag after saving
+        } else {
+          const result = await response.json();
+          alert(result.message || 'Failed to update user.');
+        }
+      } catch (error) {
+        console.error('Error saving user:', error);
+      }
+    }
+
+    // Delete a user
+    async function deleteUser(id) {
+      if (!confirm('Are you sure you want to delete this user?')) return;
+
+      try {
+        const response = await fetch(`/api/admin/users/${id}`, { method: 'DELETE' });
+
+        if (response.ok) {
+          alert('User deleted successfully.');
+          socket.emit('usersUpdated'); // Notify other clients of the deletion
+        } else {
+          const result = await response.json();
+          alert(result.message || 'Failed to delete user.');
+        }
+      } catch (error) {
+        console.error('Error deleting user:', error);
+      }
+    }
+
+    // Reset the form for adding a new user
+    function resetForm() {
+      document.getElementById('userForm').reset();
+      document.querySelector('h2').innerText = 'Add/Edit User';
+      document.querySelector('button[type="submit"]').innerText = 'Save';
+      document.querySelector('#userForm').style.border = 'none';
+    }
+
+    // Real-time update listener for user management
+    socket.on('usersUpdated', loadUsers);
+
+    // Auto-refresh user data every second
+    setInterval(() => {
+      if (!isEditing) {
+        loadUsers();
+      }
+    }, 1000);
+
+    // Load users when the page is loaded
+    document.addEventListener('DOMContentLoaded', loadUsers);
+  </script>
+</head>
+
+<body>
+  <header>
+    <div class="navbar">
+      <a href="admin-dashboard.html">
+        <i class="fas fa-arrow-left"></i> Go back to Dashboard
+      </a>
+      <span class="queueease">|| QueueEase</span>
+    </div>
+  </header>
+  
+
+
+  <!-- Main Content -->
+  <main class="container-centered">
+    <div class="container">
+      <h2 class="text-center mb-4">User Management</h2>
+      <form id="userForm" class="card p-4 shadow mb-5" onsubmit="addUser(event)">
+        <input type="hidden" id="id" name="id">
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label for="first_name" class="form-label">First Name</label>
+            <input type="text" id="first_name" name="first_name" class="form-control" required>
+          </div>
+          <div class="col-md-6">
+            <label for="last_name" class="form-label">Last Name</label>
+            <input type="text" id="last_name" name="last_name" class="form-control" required>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label for="address" class="form-label">Address</label>
+            <input type="text" id="address" name="address" class="form-control" required>
+          </div>
+          <div class="col-md-3">
+            <label for="zip_code" class="form-label">Zip Code</label>
+            <input type="text" id="zip_code" name="zip_code" class="form-control" required>
+          </div>
+          <div class="col-md-3">
+            <label for="contact_number" class="form-label">Contact Number</label>
+            <input type="text" id="contact_number" name="contact_number" class="form-control" required>
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="email" class="form-label">Email</label>
+          <input type="email" id="email" name="email" class="form-control" required>
+        </div>
+        <div class="mb-3">
+          <label for="password" class="form-label">Password</label>
+          <input type="password" id="password" name="password" class="form-control">
+        </div>
+        <div class="text-center">
+          <button type="submit" class="btn btn-primary">Save</button>
+          <button type="button" class="btn btn-secondary" onclick="resetForm()">Cancel</button>
+        </div>
+      </form>
+
+      <!-- Admins Table -->
+      <h3 class="text-center mb-3">Admins List</h3>
+      <table class="table table-striped table-hover">
+        <thead class="table-dark">
+          <tr>
+            <th>ID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Address</th>
+            <th>Zip Code</th>
+            <th>Contact Number</th>
+            <th>Email</th>
+          </tr>
+        </thead>
+        <tbody id="adminsTable">
+          <!-- Admin rows dynamically loaded -->
+        </tbody>
+      </table>
+
+      <!-- Users Table -->
+      <h3 class="text-center mb-3">Users List</h3>
+      <table class="table table-striped table-hover">
+        <thead class="table-dark">
+          <tr>
+            <th>ID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Address</th>
+            <th>Zip Code</th>
+            <th>Contact Number</th>
+            <th>Email</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="usersTable">
+          <!-- User rows dynamically loaded -->
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer mt-5">
+    ©2024 QueueEase. All rights reserved.
+  </footer>
+
+  <!-- Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+  <script src="js/user-management.js"></script>
+</body>
+</html>

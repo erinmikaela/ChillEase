@@ -1,0 +1,212 @@
+/* General Body Styles */ 
+body {
+    background-color: #FBFADA; /* Light yellow background */
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    min-height: 100vh; /* Ensures the body takes full height */
+    display: flex;
+    flex-direction: column; /* Stack elements vertically */
+  }
+  
+  /* Navbar Styles */
+  .navbar {
+    background-color: #12372A; /* Dark green background */
+    padding-left: 20px;
+    display: flex;
+    justify-content: space-between; /* Space between items */
+    align-items: center;
+    padding: 10px 20px; /* Adjusted for better spacing */
+  }
+  
+  .navbar a, .navbar .queueease {
+    color: #FBFADA; /* Light yellow text */
+    text-decoration: none;
+    font-size: 1.1rem; /* Slightly larger text for visibility */
+    display: flex;
+    align-items: center; /* Align text and icons */
+    padding: 8px 15px; /* Padding for better spacing */
+    transition: color 0.3s ease, transform 0.3s ease; /* Smooth color transition */
+  }
+  
+  .navbar a:hover, .navbar .queueease:hover {
+    color: #ADBC9F; /* Light green hover effect */
+    transform: scale(1.05); /* Slightly enlarge on hover */
+  }
+  
+  /* Icon Styling in Navbar */
+  .navbar a i, .navbar .queueease i {
+    margin-right: 8px; /* Add space between icon and text */
+    color: inherit; /* Ensures icon color matches the text */
+    transition: color 0.3s ease, transform 0.3s ease; /* Smooth color transition */
+  }
+  
+  /* Hover effect for navbar icons */
+  .navbar a:hover i, .navbar .queueease:hover i {
+    color: #ADBC9F; /* Light green color for icons on hover */
+    transform: scale(1.1); /* Slightly enlarge icon on hover */
+  }
+  
+  /* Main Content Styling */
+  main {
+    width: 90%; /* Make content take up 90% of the screen width */
+    max-width: 1400px; /* Ensure it doesn't grow too wide */
+    margin: 0 auto;
+    padding: 20px;
+    padding-top: 6%;
+    flex-grow: 1;
+  }
+  
+  /* Form Section */
+  section {
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+  }
+  
+  /* Form Labels */
+  label {
+    font-size: 1.1rem;
+    font-weight: 600;
+  }
+  
+  /* Textarea and Input Fields */
+  textarea, select, input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #e1e1e1;
+    border-radius: 4px;
+    font-size: 1rem;
+  }
+  
+  /* Submit Button */
+  button[type="button"] {
+    background-color: #28a745;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+  }
+  
+  button[type="button"]:hover {
+    background-color: #218838;
+    transform: scale(1.05);
+  }
+  
+  /* Footer Styling */
+  footer {
+    background-color: #12372A; /* Dark green */
+    color: #FBFADA; /* Light yellow text */
+    text-align: center;
+    padding: 15px;
+    font-size: 14px;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+    position: relative; /* This makes it part of the document flow */
+    margin-top: auto; /* Ensures footer stays at the bottom */
+  }
+  
+  footer a {
+    color: #ADBC9F; /* Light green */
+    text-decoration: none;
+  }
+  
+  footer a:hover {
+    color: #FBFADA; /* Light yellow on hover */
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    /* Adjust navbar items to be stacked */
+    .navbar-nav {
+      text-align: center;
+    }
+  
+    /* Adjust form fields for mobile */
+    textarea, select, input {
+      font-size: 0.9rem;
+    }
+  
+    /* Footer Adjustment */
+    footer {
+      font-size: 12px;
+      padding: 10px;
+    }
+  }
+  
+  /* General icon styling for icon */
+  i {
+    color: #555; /* Default color */
+    transition: color 0.3s ease, transform 0.3s ease;
+  }
+  
+  /* Hover effect for all icons */
+  i:hover {
+    color: #28a745; /* Change color on hover */
+    transform: scale(1.1); /* Slightly enlarge on hover */
+  }
+  
+  /* Icons in table headers */
+  table thead i {
+    color: #343a40; /* Muted color for table header icons */
+    font-size: 18px; /* Default size for navbar icons */
+  }
+  
+  table thead i:hover {
+    font-size: 20px; /* Default size for navbar icons */
+    color: #9aedae; /* Darker color on hover */
+  }
+  
+  /* Icons within the queue statistics section */
+  #queueStats i {
+    font-size: 20px; /* Default size for navbar icons */
+    color: #28a745; /* Default green for statistics icons */
+  }
+  
+  #queueStats i:hover {
+    font-size: 24px; /* Default size for navbar icons */
+    color: #1e7e34; /* Darker green on hover */
+  }
+  
+  /* Completed transactions icons */
+  table tbody i {
+    color: #17a2b8; /* Blueish tone for transaction icons */
+  }
+  
+  table tbody i:hover {
+    color: #117a8b; /* Darker blue tone on hover */
+  }
+  
+  /* Additional button-specific icons */
+  button i {
+    color: #fff; /* Icons inside buttons should match button text */
+  }
+  
+  button:hover i {
+    color: #f8f9fa; /* Slightly lighter shade on hover */
+  }
+  
+  @media (max-width: 768px) {
+    .navbar-nav {
+      text-align: center;
+    }
+  }
+
+  @media (max-width: 768px) {
+    textarea, select, input {
+      font-size: 0.9rem;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    footer {
+      font-size: 12px;
+      padding: 10px;
+    }
+  }
+  

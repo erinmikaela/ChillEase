@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>User Queue | QueueEase</title>
+
+		<!-- Google Font: Poppins -->
+		<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"rel="stylesheet"/>
+
+		<!-- Bootstrap CSS -->
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"/>
+
+		<!-- Font Awesome for logout icon -->
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet"/>
+
+		<!-- Custom Stylesheet -->
+		<link rel="stylesheet" href="css/user-queue.css" />
+
+		<!-- JavaScript for dynamic functionality -->
+		<script src="/socket.io/socket.io.js"></script>
+		<script>
+			const socket = io();
+
+			// Get user ID from localStorage
+			function getUserID() {
+				const user_id = localStorage.getItem("id");
+				if (!user_id) {
+					alert("Failed to retrieve user ID. Please log in again.");
+					window.location.href = "login.html";
+					return null;
+				}
+				return user_id;
+			}
+
+			// Update queue status dynamically
+			async function updateQueueStatus() {
+				const user_id = getUserID();
+				if (!user_id) return;
+
+				try {
+					const response = await fetch(`/api/users/queue-status/${user_id}`);
+					if (!response.ok) throw new Error("Failed to fetch queue status.");
+
+					const data = await response.json();
+					const queueStats = document.getElementById("queueStats");
+					const { currently_serving, user_queue } = data;
+
+					queueStats.innerHTML = `
+          <p><strong>Currently Serving:</strong> ${
+						currently_serving.queue_number !== "None"
+							? `Queue #${currently_serving.queue_number} (${currently_serving.service_name})`
+							: "None"
+					}</p>
+          <p><strong>Your Queue Number:</strong> ${
+						user_queue.queue_number !== "Not in queue"
+							? `Queue #${user_queue.queue_number} (${user_queue.service_name})`
+							: "Not in queue"
+					}</p>
+        `;
+				} catch (error) {
+					console.error("Error fetching queue status:", error);
+					document.getElementById("queueStats").innerHTML =
+						"<p>Join Queue To See The Live Status.</p>";
+				}
+			}
+
+			// Function to join the queue
+			async function joinQueue() {
+				const serviceSelect = document.getElementById("service_id");
+				const service_id = serviceSelect.value;
+
+				if (!service_id) {
+					alert("Please select a transaction.");
+					return;
+				}
+
+				const user_id = getUserID();
+				if (!user_id) return;
+
+				const data = { user_id, service_id };
+
+				try {
+					const response = await fetch("/api/users/transactions", {
+						method: "POST",
+						headers: { "Content-Type": "application/json" },
+						body: JSON.stringify(data),
+					});
+
+					const result = await response.json();
+
+					if (response.ok) {
+						alert("You have successfully joined the queue.");
+						socket.emit("queueUpdated");
+					} else {
+						alert(result.error || "Failed to join the queue.");
+					}
+				} catch (error) {
+					console.error("Error joining queue:", error);
+					alert("An unexpected error occurred.");
+				}
+			}
+
+			// Load available services for the dropdown
+			async function loadServices() {
+				try {
+					const response = await fetch("/api/users/services");
+					if (!response.ok) throw new Error("Failed to fetch services.");
+
+					const services = await response.json();
+					const serviceSelect = document.getElementById("service_id");
+
+					services.forEach((service) => {
+						const option = document.createElement("option");
+						option.value = service.service_id;
+						option.textContent = service.service_name;
+						serviceSelect.appendChild(option);
+					});
+				} catch (error) {
+					console.error("Error fetching services:", error);
+					alert("Failed to load services.");
+				}
+			}
+
+			// Initialize page and real-time updates
+			document.addEventListener("DOMContentLoaded", () => {
+				loadServices();
+
+				const joinQueueButton = document.getElementById("joinQueueButton");
+				joinQueueButton.addEventListener("click", joinQueue);
+
+				setInterval(updateQueueStatus, 1000);
+
+				socket.on("queueUpdated", updateQueueStatus);
+			});
+		</script>
+	</head>
+	<body>
+		<header>
+			<div class="navbar">
+				<a href="user-dashboard.html" class="back-link">
+					<i class="fas fa-arrow-left"></i> Go back to Dashboard
+				</a>
+				<span class="queueease">
+					<img src="logo-q.png" alt="QueueEase Logo" class="navbar-logo"> QueueEase
+				</span>
+			</div>
+		</header>
+		
+
+		<!-- Main Content -->
+		<main class="content-container container mt-4">
+			<!-- Queue Status Section -->
+			<section id="queueStats" class="queue-section">
+				<h2>Queue Status</h2>
+				<div class="queue-status">
+					<p>Loading queue status...</p>
+				</div>
+			</section>
+
+			<!-- Join Queue Section -->
+			<section class="queue-section mt-4">
+				<h2>Join Queue</h2>
+				<label for="service_id" class="form-label">Membership Program:</label>
+				<select id="service_id" name="service_id" class="form-select" required>
+					<option value="" disabled selected>Select a service</option>
+				</select>
+				<button id="joinQueueButton" class="btn btn-custom mt-3">
+					Join Queue
+				</button>
+			</section>
+
+			<section class="queue-section mt-4">
+				<h2>Membership Information</h2>
+			<div>
+				<!-- Informal Economy -->
+				<div class="subcontent">
+					<h3 onclick="toggleDetails(this)">Informal Economy</h3>
+					<div class="details">
+						<h4>Migrant Workers</h4>
+						<ul>
+							<li>Documented or undocumented Filipinos engaged in remunerated activities abroad.</li>
+						</ul>
+						<h4>Informal Sector</h4>
+						<ul>
+							<li>Includes street hawkers, market vendors, pedicab and tricycle drivers, small construction workers, etc.</li>
+						</ul>
+						<h4>Self-Employed Individuals</h4>
+						<ul>
+							<li>Individuals rendering services or selling goods outside of employer-employee relationships.</li>
+						</ul>
+						<h4>Filipinos With Dual Citizenship</h4>
+						<ul>
+							<li>Filipinos who are also citizens of other countries.</li>
+						</ul>
+						<h4>Naturalized Filipino Citizen</h4>
+						<ul>
+							<li>Those who have become Filipino citizens through naturalization.</li>
+						</ul>
+						<h4>Citizens of Other Countries Working/Residing in the Philippines</h4>
+						<ul>
+							<li>Foreign citizens with valid work permits and/or Alien Certificate of Registrations (ACRs).</li>
+						</ul>
+					</div>
+				</div>
+
+				<!-- Sponsored Members -->
+				<div class="subcontent">
+					<h3 onclick="toggleDetails(this)">Sponsored Members</h3>
+					<div class="details">
+						<ul>
+							<li>Members of the informal economy subsidized by LGUs or sponsors.</li>
+							<li>Orphans, abandoned children, PWDs, senior citizens, battered women under DSWD care.</li>
+							<li>Barangay workers subsidized by LGUs.</li>
+							<li>Women about to give birth, subsidized by National Government or LGUs.</li>
+						</ul>
+					</div>
+				</div>
+
+				<!-- Lifetime Members -->
+				<div class="subcontent">
+					<h3 onclick="toggleDetails(this)">Lifetime Members</h3>
+					<div class="details">
+						<ul>
+							<li>Individuals aged 60+ with at least 120 monthly contributions.</li>
+							<li>Uniformed personnel aged 56+ with at least 120 monthly contributions.</li>
+							<li>SSS underground miner-retirees aged 50+ with 120 monthly contributions.</li>
+							<li>SSS and GSIS pensioners before March 4, 1995.</li>
+						</ul>
+					</div>
+				</div>
+
+				<!-- Senior Citizens -->
+				<div class="subcontent">
+					<h3 onclick="toggleDetails(this)">Senior Citizens</h3>
+					<div class="details">
+						<ul>
+							<li>Filipino residents aged 60+ not covered by other membership categories.</li>
+							<li>Qualified dependents who are also senior citizens.</li>
+							<li>Employed seniors continue to pay premiums under applicable categories.</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+
+			<style>
+				/* General Styling */
+				.queue-section {
+					font-family: Poppins, sans-serif;
+				}
+			
+				h2 {
+					font-size: 1.5em;
+					margin-bottom: 1em;
+				}
+			
+				.subcontent {
+					margin-bottom: 1em;
+					border: 1px solid #ccc;
+					border-radius: 5px;
+					padding: 0.5em;
+					transition: box-shadow 0.3s ease;
+				}
+			
+				.subcontent:hover {
+					box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+				}
+			
+				h3 {
+					margin: 0;
+					padding: 0.5em;
+					background-color: #ffffff;
+					border-radius: 5px;
+					cursor: pointer;
+					transition: background-color 0.3s ease, color 0.3s ease;
+				}
+			
+				h3:hover {
+					background-color: #161e04;
+					color: white;
+				}
+			
+				.details {
+					margin-top: 0.5em;
+					padding: 0 0.5em;
+					display: none; /* Hidden by default */
+				}
+			</style>
+			
+			<script>
+				function toggleDetails(header) {
+					const details = header.nextElementSibling;
+					if (details) {
+						details.style.display = details.style.display === 'block' ? 'none' : 'block';
+					}
+				}
+			
+				// Initially hide all details
+				document.querySelectorAll('.details').forEach(detail => {
+					detail.style.display = 'none';
+				});
+			</script>
+			
+		</main>
+
+		<!-- Footer -->
+		<footer
+			class="text-center text-light py-3"
+			style="background-color: #12372a"
+		>
+			©2024 QueueEase. All rights reserved.
+		</footer>
+
+		<!-- Bootstrap JS -->
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+	</body>
+</html>

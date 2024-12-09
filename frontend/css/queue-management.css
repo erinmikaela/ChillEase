@@ -1,0 +1,264 @@
+/* General Body Styles */
+body {
+    background-color: #FBFADA; /* Light yellow background */
+    font-family: 'Poppins', sans-serif;
+    margin: 0; /* Remove default margins */
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Ensure body covers the full height of the viewport */
+}
+
+/* Navbar Styles */
+.navbar {
+    background-color: #12372A; /* Dark green background */
+    padding-left: 20px;
+    display: flex;
+    justify-content: space-between; /* Space between items */
+    align-items: center;
+    padding: 10px 20px; /* Adjusted for better spacing */
+}
+
+/* Navbar items */
+.navbar a, .navbar .queueease {
+    color: #FBFADA; /* Light yellow text */
+    text-decoration: none;
+    font-size: 1.1rem; /* Slightly larger text for visibility */
+    display: flex;
+    align-items: center; /* Align text and icons */
+    padding: 8px 15px; /* Padding for better spacing */
+    transition: color 0.3s ease, transform 0.3s ease; /* Smooth color transition */
+}
+
+/* Hover effect */
+.navbar a:hover, .navbar .queueease:hover {
+    color: #ADBC9F; /* Light green hover effect */
+    transform: scale(1.05); /* Slightly enlarge on hover */
+}
+
+.navbar a i, .navbar .queueease i {
+    margin-right: 8px; /* Add space between icon and text */
+    color: inherit; /* Ensures icon color matches the text */
+    transition: color 0.3s ease, transform 0.3s ease; /* Smooth color transition */
+}
+
+.navbar a:hover i, .navbar .queueease:hover i {
+    color: #ADBC9F; /* Light green color for icons on hover */
+    transform: scale(1.1); /* Slightly enlarge icon on hover */
+}
+
+/* Navbar text style */
+.navbar-text {
+    color: #FBFADA; /* Light yellow text color */
+    text-decoration: none;
+    font-size: 1.1rem; /* Same size as navbar items */
+    padding: 8px 15px; /* Same padding as navbar items */
+    transition: color 0.3s ease, transform 0.3s ease; /* Smooth transition */
+    margin-left: auto; /* Aligns it to the right */
+}
+
+.navbar-text:hover {
+    color: #ADBC9F; /* Light green color on hover */
+    transform: scale(1.05); /* Slightly enlarge on hover */
+}
+
+/* Main Content Styling */
+main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Queue Stats Section */
+#queueStats {
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+}
+
+#queueStats p {
+    font-size: 1.1rem;
+    margin: 10px 0;
+}
+
+#queueStats strong {
+    font-weight: 600;
+}
+
+/* Tables Section */
+table {
+    width: 100%;
+    margin-bottom: 30px;
+    border-collapse: collapse;
+    border: 1px solid #e1e1e1;
+    overflow-x: auto; /* Enable horizontal scroll on small screens */
+}
+
+table th, table td {
+    text-align: center;
+    padding: 10px;
+    font-size: 1rem;
+}
+
+table th {
+    background-color: #28a745 !important;
+    color: #fff;
+    font-weight: bold;
+}
+
+table td {
+    background-color: #fff;
+    border: 1px solid #e1e1e1;
+}
+
+/* Table Action Buttons */
+table td button {
+    font-size: 0.9rem;
+    padding: 5px 10px;
+    margin: 3px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+table td button:hover {
+    opacity: 0.8;
+}
+
+/* Action Button Colors */
+table td button.btn-warning {
+    background-color: #f39c12;
+    color: white;
+}
+
+table td button.btn-success {
+    background-color: #28a745;
+    color: white;
+}
+
+table td button.btn-danger {
+    background-color: #dc3545;
+    color: white;
+}
+
+/* Footer Styling */
+footer {
+    background-color: #12372A; /* Dark green */
+    color: #FBFADA; /* Light yellow text */
+    text-align: center;
+    padding: 15px;
+    font-size: 14px;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+    position: relative; /* This makes it part of the document flow */
+    margin-top: auto; /* Ensures footer stays at the bottom */
+}
+
+footer a {
+    color: #ADBC9F; /* Light green */
+    text-decoration: none;
+}
+
+footer a:hover {
+    color: #FBFADA; /* Light yellow on hover */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    /* Adjust navbar items to be stacked and centered */
+    .navbar {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .navbar a, .navbar .queueease {
+        padding: 10px 15px;
+        font-size: 1rem; /* Smaller font size */
+    }
+
+    /* Adjust table layout for smaller screens */
+    table {
+        font-size: 0.9rem;
+        overflow-x: auto;
+    }
+
+    table th, table td {
+        padding: 8px; /* Adjust padding for smaller screens */
+    }
+
+    /* Queue Stats Section */
+    #queueStats {
+        margin-bottom: 20px;
+    }
+
+    /* Footer Adjustment */
+    footer {
+        font-size: 12px;
+        padding: 10px;
+    }
+}
+
+/* General icon styling for icon */
+i {
+    color: #555; /* Default color */
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+/* Hover effect for all icons */
+i:hover {
+    color: #28a745; /* Change color on hover */
+    transform: scale(1.1); /* Slightly enlarge on hover */
+}
+
+/* Styling for specific icons */
+.navbar a.logout-btn i {
+    color: #dc3545; /* Default red color for logout icon */
+}
+
+.navbar a.logout-btn i:hover {
+    color: #a71d2a; /* Darker red on hover */
+    transform: rotate(90deg); /* Add a fun rotation effect */
+}
+
+/* Icons in table headers */
+table thead i {
+    color: #343a40; /* Muted color for table header icons */
+    font-size: 18px; /* Default size for navbar icons */
+}
+
+table thead i:hover {
+    font-size: 20px; /* Default size for navbar icons */
+    color: #9aedae; /* Darker color on hover */
+}
+
+/* Icons within the queue statistics section */
+#queueStats i {
+    font-size: 20px; /* Default size for navbar icons */
+    color: #28a745; /* Default green for statistics icons */
+}
+
+#queueStats i:hover {
+    font-size: 24px; /* Default size for navbar icons */
+    color: #1e7e34; /* Darker green on hover */
+}
+
+/* Completed transactions icons */
+table tbody i {
+    color: #17a2b8; /* Blueish tone for transaction icons */
+}
+
+table tbody i:hover {
+    color: #117a8b; /* Darker blue tone on hover */
+}
+
+/* Additional button-specific icons */
+button i {
+    color: #fff; /* Icons inside buttons should match button text */
+}
+
+button:hover i {
+    color: #f8f9fa; /* Slightly lighter shade on hover */
+}

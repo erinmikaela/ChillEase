@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QueueEase: Queue Management System</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            overflow: hidden;
+            height: 100vh;
+            background: linear-gradient(45deg, #12372A, #436850, #9c9f7a, #FBFADA);
+            background-size: 300% 300%;
+            animation: backgroundShift 10s linear infinite;
+            font-family: 'Arial', sans-serif;
+        }
+
+        @keyframes backgroundShift {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            z-index: 0;
+        }
+
+        .shape {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(8px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            animation: moveAround 10s ease-in-out infinite;
+        }
+
+        @keyframes moveAround {
+            0% {
+                transform: translate(0, 0);
+            }
+            25% {
+                transform: translate(calc(100vw - 150px), calc(100vh - 150px));
+            }
+            50% {
+                transform: translate(calc(-100vw + 150px), calc(100vh - 150px));
+            }
+            75% {
+                transform: translate(calc(-100vw + 150px), calc(-100vh + 150px));
+            }
+            100% {
+                transform: translate(0, 0);
+            }
+        }
+
+        .shape.circle {
+            border-radius: 50%;
+        }
+
+        .shape.rounded {
+            border-radius: 10%;
+        }
+
+        .gradient-1 {
+            background: linear-gradient(45deg, #12372A, #436850);
+        }
+
+        .gradient-2 {
+            background: linear-gradient(45deg, #436850, #ADBC9F);
+        }
+
+        .gradient-3 {
+            background: linear-gradient(45deg, #ADBC9F, #FBFADA);
+        }
+
+        .gradient-4 {
+            background: linear-gradient(45deg, #FBFADA, #12372A);
+        }
+
+        .gradient-5 {
+            background: linear-gradient(45deg, #12372A, #FBFADA);
+        }
+
+        main {
+            position: relative;
+            z-index: 5;
+        }
+
+        .hero {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 2rem;
+            height: 100vh;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .content {
+            text-align: left;
+            max-width: 50%;
+            color: #042514;
+        }
+
+        .content h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .content p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 1rem;
+            flex-direction: row;
+            align-items: center;
+        }
+
+        .btn {
+            text-decoration: none;
+            padding: 10px 20px;
+            font-size: 1rem;
+            border-radius: 5px;
+            color: #ffffff;
+            border: 2px solid transparent;
+            transition: background 0.3s ease, transform 0.2s ease, border-color 0.3s ease;
+        }
+
+        .btn.register {
+            background: #436850;
+            border-color: #436850;
+        }
+
+        .btn.register:hover {
+            background: #12372A;
+        }
+
+        .btn.login {
+            background: #ADBC9F;
+            border-color: #ADBC9F;
+        }
+
+        .btn.login:hover {
+            background: #bbba90;
+            color: #12372A;
+        }
+
+        /* Media Queries for Mobile Adjustments */
+        @media (max-width: 768px) {
+            .hero {
+                padding: 1rem;
+                flex-direction: column;
+                justify-content: center;
+            }
+
+            .content {
+                max-width: 90%;
+                text-align: center;
+            }
+
+            .content h1 {
+                font-size: 2rem;
+            }
+
+            .content p {
+                font-size: 1rem;
+            }
+
+            .buttons {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .btn {
+                font-size: 1rem;
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero {
+                padding: 1rem;
+            }
+
+            .content h1 {
+                font-size: 1.5rem;
+            }
+
+            .content p {
+                font-size: 0.9rem;
+            }
+
+            .buttons {
+                gap: 1rem;
+            }
+
+            .btn {
+                font-size: 1rem;
+                padding: 10px 15px;
+            }
+        }
+
+        @media (max-width: 320px) {
+            .hero {
+                padding: 0.5rem;
+            }
+
+            .content h1 {
+                font-size: 1.4rem;
+            }
+
+            .content p {
+                font-size: 0.8rem;
+            }
+
+            .buttons {
+                gap: 0.5rem;
+            }
+
+            .btn {
+                font-size: 1rem;
+                padding: 10px 15px;
+            }
+        }
+
+        #geoWarning {
+            color: red;
+            text-align: center;
+            display: none;
+        }
+    </style>
+
+    <!-- Add Socket.IO client script -->
+    <script src="/socket.io/socket.io.js"></script>
+    <script defer src="js/scripts.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Your shapes will be here -->
+    </div>
+
+    <main>
+        <section class="hero d-flex align-items-center justify-content-between p-4">
+            <div class="content text-center text-lg-start">
+                <h1>QueueEase: A Queue Management System</h1>
+                <p>
+                    QueueEase will streamline queue management and reduce waiting times
+                    for <b>PhilHealth</b> establishments.
+                </p>
+
+                <!-- Geolocation Warning Message -->
+                <p id="geoWarning" class="text-danger text-center" style="display: none;">
+                    This service is only accessible from approved locations.
+                </p>
+
+                <div class="buttons d-flex justify-content-center justify-content-lg-start gap-3">
+                    <a href="register.html" class="btn register" id="registerButton">Register</a>
+                    <a href="login.html" class="btn login" id="loginButton">Log in</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const container = document.querySelector('.container');
+        const numberOfShapes = 10;
+        const shapeSize = 100;
+
+        const getRandomPosition = () => ({
+            x: Math.random() * (window.innerWidth - shapeSize),
+            y: Math.random() * (window.innerHeight - shapeSize),
+        });
+
+        const getRandomGradient = () => {
+            const gradients = [
+                'gradient-1',
+                'gradient-2',
+                'gradient-3',
+                'gradient-4',
+                'gradient-5',
+            ];
+            return gradients[Math.floor(Math.random() * gradients.length)];
+        };
+
+        const isOverlapping = (newShape, existingShapes) => {
+            return existingShapes.some(shape => {
+                const dx = shape.x - newShape.x;
+                const dy = shape.y - newShape.y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                return distance < shapeSize;
+            });
+        };
+
+        const createShapes = () => {
+            const existingShapes = [];
+            for (let i = 0; i < numberOfShapes; i++) {
+                let position;
+
+                do {
+                    position = getRandomPosition();
+                } while (isOverlapping(position, existingShapes));
+
+                existingShapes.push(position);
+
+                const shape = document.createElement('div');
+                shape.classList.add('shape');
+                shape.style.width = `${shapeSize}px`;
+                shape.style.height = `${shapeSize}px`;
+                shape.style.left = `${position.x}px`;
+                shape.style.top = `${position.y}px`;
+
+                if (i % 2 === 0) {
+                    shape.classList.add('circle');
+                } else {
+                    shape.classList.add('rounded');
+                }
+
+                shape.classList.add(getRandomGradient());
+
+                shape.style.animationDuration = `${10 + Math.random() * 5}s`;
+                shape.style.animationDelay = `${Math.random() * 5}s`;
+
+                container.appendChild(shape);
+            }
+        };
+
+        createShapes();
+    </script>
+
+    <!-- Bootstrap 5 JS (Optional) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
