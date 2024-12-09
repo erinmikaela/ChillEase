@@ -1,246 +1,239 @@
-    /* General Body Styling */
-    body {
-        background-color: #FBFADA; /* Light background color */
-        font-family: 'Poppins', sans-serif; /* Clean font for readability */
-        padding-bottom: 60px; /* Adds space for footer */
-        margin: 0; /* Remove any default margin */
-        display: flex;
-        justify-content: center; /* Center content horizontally */
-        align-items: flex-start; /* Align items at the top of the screen */
-        min-height: 100vh;
-        flex-direction: column; /* Stack content vertically */
-      }
-      
-      /* Navbar Styles */
-    .navbar {
-      background: #12372A; 
-      position: fixed; /* Make navbar stay at the top */
-      width: 100%; /* Ensure it spans the full width */
-      top: 0;
-      left: 0;
-      z-index: 1000; /* Keep navbar above other content */
-      height: 60px; /* Set height for the navbar */
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0 20px; /* Adjust padding */
-    }
-    
-    /* Back Link Styling */
-    .navbar a {
-      color: #FBFADA; /* Light yellow text */
-      text-decoration: none;
-      font-size: 1rem; /* Slightly larger text for visibility */
-      display: flex;
-      align-items: center; /* Align text and icons */
-      padding: 8px 15px; /* Padding for better spacing */
-      transition: color 0.3s ease, transform 0.3s ease; /* Smooth color transition */
-    }
-    
-    /* Hover effects for the navbar */
-    .navbar a:hover {
-      color: #ADBC9F; /* Light green hover effect */
-      transform: scale(1.05); /* Slightly enlarge on hover */
-    }
-    
-    /* QueueEase text with logo */
-    .queueease {
-      display: flex;
-      align-items: center;
-      font-size: 1.25rem; /* Adjust font size */
-      color: #FBFADA; /* Light yellow text */
-    }
-    
-    /* Logo Styling */
-    .navbar-logo {
-      height: 40px; /* Adjust logo height */
-      width: auto; /* Maintain aspect ratio */
-      margin-right: 7px; /* Space between logo and text */
-    }
-    
-    /* Icon Styling in Navbar */
-    .navbar a i, .navbar .queueease i {
-      margin-right: 8px; /* Add space between icon and text */
-      color: inherit; /* Ensures icon color matches the text */
-      transition: color 0.3s ease, transform 0.3s ease; /* Smooth color transition */
-    }
-    
-    /* Hover effect for navbar icons */
-    .navbar a:hover i, .navbar .queueease:hover i {
-      color: #ADBC9F; /* Light green color for icons on hover */
-      transform: scale(1.1); /* Slightly enlarge icon on hover */
-    }
-        
-        
-    /* Centering Container */
-  .container-centered {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh; /* Full height of the viewport */
-      width: 100%; /* Full width of the viewport */
-      margin: 0; /* Remove any margins */
-      padding: 0; /* Remove padding for accurate centering */
-    }
-  
-  
+/* General Body Styling */
+body {
+  background-color: #FBFADA;
+  font-family: 'Poppins', sans-serif;
+  padding-bottom: 60px;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+/* Navbar Styles */
+.navbar {
+  background: #12372A;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  height: 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+}
+
+.navbar a {
+  color: #FBFADA;
+  text-decoration: none;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  padding: 8px 15px;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.navbar a:hover {
+  color: #ADBC9F;
+  transform: scale(1.05);
+}
+
+.queueease {
+  display: flex;
+  align-items: center;
+  font-size: 1.25rem;
+  color: #FBFADA;
+}
+
+.navbar-logo {
+  height: 40px;
+  margin-right: 7px;
+}
+
+.navbar a i, .navbar .queueease i {
+  margin-right: 8px;
+  color: inherit;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.navbar a:hover i, .navbar .queueease:hover i {
+  color: #ADBC9F;
+  transform: scale(1.1);
+}
+
+/* Content Styling */
+.container-centered {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100%;
+}
+
+.content-container {
+  background-color: #ADBC9F;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.486);
+  padding: 30px;
+  max-width: 800px;
+  width: 100%;
+  text-align: center;
+}
+
+.content-container h1 {
+  color: #12372A;
+  margin-bottom: 20px;
+}
+
+/* Notification Table */
+#notificationsContainer {
+  background-color: #ffffff;
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+#notificationsContainer .table th, #notificationsContainer .table td {
+  vertical-align: middle;
+  color: #12372A;
+}
+
+.recent-notification {
+  background-color: #e88388;
+  font-weight: bold;
+}
+
+.recent-notification td {
+  color: #ffffff !important; /* Change text color to white */
+}
+
+
+/* Button Styling */
+#seeAllBtn {
+  padding: 10px 20px;
+  background-color: #436850;
+  color: #FBFADA;
+  border: none;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+}
+
+#seeAllBtn:hover {
+  background-color: #12372A;
+}
+
+/* Footer Styling */
+footer {
+  background-color: #12372A;
+  color: #FBFADA;
+  text-align: center;
+  padding: 15px;
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+  left: 0;
+}
+
+footer a {
+  color: #ADBC9F;
+  text-decoration: none;
+}
+
+footer a:hover {
+  color: #FBFADA;
+}
+
+
+/* Responsive Design */
+@media (max-width: 768px) {
   .content-container {
-    background-color: #ADBC9F; /* Light background color */
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.486); /* Add shadow for depth */
-    padding: 30px;
-    max-width: 600px; /* Limit width for better focus */
-    width: 100%; /* Make it responsive */
-    text-align: center;
-  }
-
-  .content-container:hover {
-    color: #12372A; 
-    transform: scale(1.05); /* Slightly enlarge on hover */
-  }
-
-
-  
-  .content-container h1 {
-    color: #12372A; /* Dark green color */
-    margin-bottom: 20px;
-  }
-  
-  #notificationsContainer {
-    background-color: #ffffff; /* Match card styling */
-    padding: 15px;
-    border-radius: 10px;
-    margin-bottom: 20px;
-    max-height: 300px; /* Limit height with scroll */
-    overflow-y: auto; /* Add scrolling for overflow */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  }
-  
-  #notificationsContainer p {
-    color: #12372A;
-  }
-  
-  #seeAllBtn {
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: #436850;
-    color: #FBFADA;
-    border: none;
-    border-radius: 8px;
-    transition: background-color 0.3s ease;
-  }
-  
-  #seeAllBtn:hover {
-    background-color: #12372A;
-  }
-  
-  /* Footer Styling */
-  footer {
-    background-color: #12372A; /* Dark green color */
-    color: #FBFADA; /* Light text color */
-    text-align: center;
-    padding: 15px;
-    position: fixed;
-    width: 100%;
-    bottom: 0;
-    left: 0;
-    font-size: 14px;
-  }
-  
-  footer a {
-    color: #ADBC9F;
-    text-decoration: none;
-  }
-  
-  footer a:hover {
-    color: #FBFADA;
-  }
-  
-  /* Responsive Design */
-  @media (max-width: 768px) {
-    .content-container {
       padding: 20px;
-    }
   }
-  
-  @media (max-width: 768px) {
-    #notificationsContainer {
+}
+
+@media (max-width: 768px) {
+  #notificationsContainer {
       max-height: 200px; /* Limit max height for smaller screens */
       padding: 10px; /* Reduce padding */
-    }
-  
-    #seeAllBtn {
-      padding: 8px 16px; /* Adjust button padding for better mobile feel */
-    }
   }
+
+  #seeAllBtn {
+      padding: 8px 16px; /* Adjust button padding for better mobile feel */
+  }
+}
 
 /* Responsive Design for Tablets */
 @media (max-width: 1024px) {
   .navbar {
-    padding: 10px 15px;
+      padding: 10px 15px;
   }
 
   .navbar a {
-    font-size: 0.95rem; /* Slightly smaller font size */
+      font-size: 0.95rem; /* Slightly smaller font size */
   }
 
   .content-container {
-    padding: 20px;
+      padding: 20px;
   }
 
   #notificationsContainer {
-    max-height: 250px; /* Adjust max height */
+      max-height: 350px; /* Adjust max height */
   }
 
   #seeAllBtn {
-    padding: 8px 16px; /* Adjust button padding */
+      padding: 8px 16px; /* Adjust button padding */
   }
 }
 
 /* Responsive Design for Mobile Devices */
 @media (max-width: 768px) {
   .navbar {
-    padding: 10px 15px;
-    flex-direction: column;
-    align-items: center;
+      padding: 10px 15px;
+      flex-direction: column;
+      align-items: center;
   }
 
   .navbar a {
-    font-size: 0.9rem; /* Slightly smaller font size */
+      font-size: 0.9rem; /* Slightly smaller font size */
   }
 
   .content-container {
-    padding: 15px;
+      padding: 15px;
   }
 
   #notificationsContainer {
-    max-height: 200px; /* Adjust max height */
+      max-height: 300px; /* Adjust max height */
   }
 
   #seeAllBtn {
-    padding: 8px 16px; /* Adjust button padding */
+      padding: 8px 16px; /* Adjust button padding */
   }
 }
 
 /* Responsive Design for Small Mobile Devices */
 @media (max-width: 480px) {
   .navbar {
-    padding: 8px 10px; /* Adjust padding */
+      padding: 8px 10px; /* Adjust padding */
   }
 
   .navbar a {
-    font-size: 0.85rem; /* Further reduce font size */
+      font-size: 0.85rem; /* Further reduce font size */
   }
 
   .content-container {
-    padding: 10px;
+      padding: 10px;
   }
 
   #notificationsContainer {
-    max-height: 150px; /* Adjust max height */
+      max-height: 350px; /* Adjust max height */
   }
 
   #seeAllBtn {
-    padding: 6px 12px; /* Adjust button padding */
+      padding: 6px 12px; /* Adjust button padding */
   }
 }

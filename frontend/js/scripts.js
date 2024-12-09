@@ -194,7 +194,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Hardcode the allowed latitude and longitude as you provided:
     const ALLOWED_LATITUDE = 14.463976595354648;
     const ALLOWED_LONGITUDE = 121.02209109580798;
-    const ALLOWED_RADIUS = 1000; // 1 km radius
+    const ALLOWED_RADIUS = 5000; // 1 km radius
 
     // Log the approved area coordinates
     console.log('Approved Area - Latitude:', ALLOWED_LATITUDE, 'Longitude:', ALLOWED_LONGITUDE);

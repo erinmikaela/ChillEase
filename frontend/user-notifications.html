@@ -11,7 +11,7 @@
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 
-  <!-- Font Awesome for Logout Icon -->
+  <!-- Font Awesome for Icons -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 
   <!-- Custom CSS -->
@@ -33,9 +33,21 @@
   <div class="container-centered">
     <div class="content-container">
       <h1 class="text-center">User Notifications</h1>
-      <section id="notificationsContainer">
+      <section id="notificationsContainer" class="table-responsive">
         <!-- Notifications will load here dynamically -->
-        <p>Loading notifications...</p>
+        <table class="table table-bordered table-striped">
+          <thead>
+            <tr>
+              <th>Icon</th>
+              <th>Message</th>
+              <th>Time</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Notifications will populate here -->
+            <tr><td colspan="3" class="text-center">Loading notifications...</td></tr>
+          </tbody>
+        </table>
       </section>
       <button id="seeAllBtn" class="btn-custom mt-3">See All</button>
     </div>
@@ -70,17 +82,32 @@
        const notifications = await response.json();
        const notificationsContainer = document.getElementById('notificationsContainer');
 
+       const tableBody = notifications.map(notification => {
+         const isRecent = new Date(notification.created_at) > new Date(Date.now() - 3600000); // Last hour
+         return `
+           <tr class="${isRecent ? 'recent-notification' : ''}">
+             <td><i class="fas fa-bell"></i></td>
+             <td>${notification.message}</td>
+             <td>${new Date(notification.created_at).toLocaleString()}</td>
+           </tr>
+         `;
+       }).join('');
+
        if (notifications.length > 0) {
-         notificationsContainer.innerHTML = notifications
-           .map(
-             (notification) => `
-             <div class="notification-card">
-               <p>${notification.message}</p>
-               <span>${new Date(notification.created_at).toLocaleString()}</span>
-             </div>
-           `
-           )
-           .join('');
+         notificationsContainer.innerHTML = `
+           <table class="table table-bordered table-striped">
+             <thead>
+               <tr>
+                 <th>Icon</th>
+                 <th>Message</th>
+                 <th>Time</th>
+               </tr>
+             </thead>
+             <tbody>
+               ${tableBody}
+             </tbody>
+           </table>
+         `;
        } else {
          notificationsContainer.innerHTML = '<p>No notifications found.</p>';
        }
@@ -121,13 +148,14 @@
 
    function handleRealTimeNotification(message) {
      const notificationsContainer = document.getElementById('notificationsContainer');
-     const notificationCard = `
-       <div class="notification-card">
-         <p>${message}</p>
-         <span>${new Date().toLocaleString()}</span>
-       </div>
+     const notificationRow = `
+       <tr>
+         <td><i class="fas fa-bell"></i></td>
+         <td>${message}</td>
+         <td>${new Date().toLocaleString()}</td>
+       </tr>
      `;
-     notificationsContainer.innerHTML = notificationCard + notificationsContainer.innerHTML;
+     notificationsContainer.innerHTML = notificationRow + notificationsContainer.innerHTML;
    }
 
    function startAutoUpdate() {
