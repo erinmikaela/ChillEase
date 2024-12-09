@@ -29,9 +29,11 @@ body {
   }
   
   .navbar a:hover, .navbar .queueease:hover {
-    color: #ADBC9F; /* Light green hover effect */
-    transform: scale(1.05); /* Slightly enlarge on hover */
+    color: #ADBC9F !important; /* Light green hover effect */
+    transform: scale(1.05) !important; /* Slightly enlarge on hover */
   }
+
+  
   
   /* Icon Styling in Navbar */
   .navbar a i, .navbar .queueease i {

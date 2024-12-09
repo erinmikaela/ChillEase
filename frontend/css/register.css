@@ -7,17 +7,33 @@ body {
   
   /* Navbar Styles */
   .navbar {
-    background-color: #12372A; /* Dark green background */
+    background: linear-gradient(90deg, #12372A, #1A5E3A,#416c55,#709682);
+    padding: 10px 20px; /* Adjust padding for mobile */
   }
   
   .navbar a {
     color: #FBFADA; /* Light yellow text */
     text-decoration: none;
+    font-size: 1rem; /* Adjust font size for better readability */
   }
   
   .navbar a:hover {
     color: #ADBC9F; /* Light green hover effect */
   }
+  
+  .navbar-logo {
+    height: 40px; /* Adjust as needed */
+    width: auto; /* Maintain aspect ratio */
+  }
+  
+  .navbar-brand {
+    font-size: 2.25rem; /* Adjust font size if necessary */
+  }
+  
+  .navbar-dark .navbar-toggler {
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+  
   
   /* Registration Form Styles */
   form {
@@ -178,6 +194,68 @@ body {
   
     footer {
         font-size: 12px;
+    }
+  }
+  
+  /* Responsive Design for Tablets */
+  @media (max-width: 1024px) {
+    .navbar {
+      padding: 10px 15px;
+    }
+  
+    .navbar a {
+      font-size: 0.95rem; /* Slightly smaller font size */
+    }
+  
+    form {
+      padding: 20px;
+    }
+  
+    form .form-control, form .btn-custom, .btn-secondary {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+  }
+  
+  /* Responsive Design for Mobile Devices */
+  @media (max-width: 768px) {
+    .navbar {
+      padding: 10px 15px;
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    .navbar a {
+      font-size: 0.9rem; /* Slightly smaller font size */
+    }
+  
+    form {
+      padding: 15px;
+    }
+  
+    form .form-control, form .btn-custom, .btn-secondary {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+  }
+  
+  /* Responsive Design for Small Mobile Devices */
+  @media (max-width: 480px) {
+    .navbar {
+      padding: 8px 10px; /* Adjust padding */
+    }
+  
+    .navbar a {
+      font-size: 0.85rem; /* Further reduce font size */
+    }
+  
+    form {
+      padding: 10px;
+    }
+  
+    form .form-control, form .btn-custom, .btn-secondary {
+      width: 100%;
+      margin-bottom: 8px;
     }
   }
   

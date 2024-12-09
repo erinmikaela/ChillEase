@@ -19,10 +19,18 @@
 
 		<!-- JavaScript for dynamic functionality -->
 		<script src="/socket.io/socket.io.js"></script>
+		
+		<!-- EmailJS SDK -->
+		<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+		<script type="text/javascript">
+			(function () {
+				emailjs.init("_3-17_pX9sbhDPRK0");
+			})();
+		</script>
+	
 		<script>
 			const socket = io();
-
-			// Get user ID from localStorage
+	
 			function getUserID() {
 				const user_id = localStorage.getItem("id");
 				if (!user_id) {
@@ -32,66 +40,87 @@
 				}
 				return user_id;
 			}
-
-			// Update queue status dynamically
+	
 			async function updateQueueStatus() {
 				const user_id = getUserID();
 				if (!user_id) return;
-
+	
 				try {
 					const response = await fetch(`/api/users/queue-status/${user_id}`);
 					if (!response.ok) throw new Error("Failed to fetch queue status.");
-
+	
 					const data = await response.json();
 					const queueStats = document.getElementById("queueStats");
-					const { currently_serving, user_queue } = data;
-
+					const { currently_serving, user_queue, isUserInQueue, isSomeoneServing } = data;
+	
+					let servingText = isSomeoneServing && currently_serving
+						? `Queue #${currently_serving.queue_number} (${currently_serving.service_name})`
+						: "No one is currently being served";
+	
+					let userQueueText = isUserInQueue && user_queue
+						? `Queue #${user_queue.queue_number} (${user_queue.service_name})`
+						: "You are not in the queue";
+	
 					queueStats.innerHTML = `
-          <p><strong>Currently Serving:</strong> ${
-						currently_serving.queue_number !== "None"
-							? `Queue #${currently_serving.queue_number} (${currently_serving.service_name})`
-							: "None"
-					}</p>
-          <p><strong>Your Queue Number:</strong> ${
-						user_queue.queue_number !== "Not in queue"
-							? `Queue #${user_queue.queue_number} (${user_queue.service_name})`
-							: "Not in queue"
-					}</p>
-        `;
+						<p><strong>Currently Serving:</strong> ${servingText}</p>
+						<p><strong>Your Queue Number:</strong> ${userQueueText}</p>
+					`;
 				} catch (error) {
 					console.error("Error fetching queue status:", error);
 					document.getElementById("queueStats").innerHTML =
-						"<p>Join Queue To See The Live Status.</p>";
+						"<p>Failed to load queue status.</p>";
 				}
 			}
-
-			// Function to join the queue
+	
+			function sendEmail(toEmail, toName, queueNumber) {
+				const templateParams = {
+					to_email: toEmail,
+					to_name: toName,
+					queue_number: queueNumber,
+					message: `Hello ${toName},\n\nYou have successfully joined the queue. Your queue number is #${queueNumber}. Please wait for your turn.\n\nThank you!`,
+				};
+	
+				emailjs.send("service_ectj92j", "template_on7sfyq", templateParams)
+					.then(response => {
+						console.log("Email sent successfully!", response.status, response.text);
+					})
+					.catch(error => {
+						console.error("Failed to send email:", error);
+					});
+			}
+	
 			async function joinQueue() {
 				const serviceSelect = document.getElementById("service_id");
 				const service_id = serviceSelect.value;
-
+	
 				if (!service_id) {
 					alert("Please select a transaction.");
 					return;
 				}
-
+	
 				const user_id = getUserID();
 				if (!user_id) return;
-
+	
 				const data = { user_id, service_id };
-
+	
 				try {
 					const response = await fetch("/api/users/transactions", {
 						method: "POST",
 						headers: { "Content-Type": "application/json" },
 						body: JSON.stringify(data),
 					});
-
+	
 					const result = await response.json();
-
+	
 					if (response.ok) {
-						alert("You have successfully joined the queue.");
+						alert(`You have successfully joined the queue. Your queue number is #${result.queue_number}.`);
+						
+						if (result.email && result.first_name && result.queue_number) {
+							sendEmail(result.email, result.first_name, result.queue_number);
+						}
+	
 						socket.emit("queueUpdated");
+						updateQueueStatus();
 					} else {
 						alert(result.error || "Failed to join the queue.");
 					}
@@ -100,17 +129,16 @@
 					alert("An unexpected error occurred.");
 				}
 			}
-
-			// Load available services for the dropdown
+	
 			async function loadServices() {
 				try {
 					const response = await fetch("/api/users/services");
 					if (!response.ok) throw new Error("Failed to fetch services.");
-
+	
 					const services = await response.json();
 					const serviceSelect = document.getElementById("service_id");
-
-					services.forEach((service) => {
+	
+					services.forEach(service => {
 						const option = document.createElement("option");
 						option.value = service.service_id;
 						option.textContent = service.service_name;
@@ -121,17 +149,23 @@
 					alert("Failed to load services.");
 				}
 			}
-
-			// Initialize page and real-time updates
+	
+			function toggleDetails(header) {
+				const details = header.nextElementSibling;
+				if (details) {
+					details.style.display = details.style.display === "block" ? "none" : "block";
+				}
+			}
+	
 			document.addEventListener("DOMContentLoaded", () => {
 				loadServices();
-
-				const joinQueueButton = document.getElementById("joinQueueButton");
-				joinQueueButton.addEventListener("click", joinQueue);
-
+	
+				document.getElementById("joinQueueButton").addEventListener("click", joinQueue);
+	
 				setInterval(updateQueueStatus, 1000);
-
+	
 				socket.on("queueUpdated", updateQueueStatus);
+				updateQueueStatus();
 			});
 		</script>
 	</head>

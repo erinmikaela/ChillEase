@@ -180,7 +180,7 @@ footer a:hover {
 
     /* Adjust Icon Box layout for small screens */
     .icon-container {
-        margin-top: 60px;
+        margin-top: 10px;
         display: flex;
         flex-wrap: wrap;
         justify-content: center; /* Center icons on mobile */
@@ -214,3 +214,182 @@ footer a:hover {
         font-size: 12px; /* Slightly smaller font size for mobile */
     }
 }
+
+
+@media (max-width: 768px) {
+    /* General body adjustments for small screens */
+    body {
+      overflow-y: auto;
+      padding: 10px;
+    }
+  
+    /* Navbar adjustments */
+    .navbar {
+      padding: 10px;
+    }
+  
+    .navbar-brand strong {
+      font-size: 16px;
+    }
+  
+    .navbar-logo {
+      height: 30px;
+    }
+  
+    /* Container adjustments */
+    .container {
+      margin: 20px auto;
+      padding: 15px;
+      max-width: 100%;
+      box-shadow: none;
+    }
+  
+    /* Welcome message adjustments */
+    .welcome-message h3 {
+      font-size: 24px;
+    }
+  
+    .welcome-message p {
+      font-size: 14px;
+    }
+  
+    /* Icon section adjustments */
+    .icon-container {
+      display: flex;
+      flex-wrap: wrap; /* Wrap the boxes */
+      justify-content: center; /* Center-align boxes */
+      gap: 15px; /* Add spacing between boxes */
+    }
+  
+    .icon-box {
+      width: 120px !important; /* Adjusted width */
+      height: 140px !important; /* Adjusted height */
+      padding: 10px !important;
+      text-align: center;
+      background-color: #096bcc;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+      display: flex;
+      flex-direction: column;
+      justify-content: center; /* Center content vertically */
+      align-items: center; /* Center content horizontally */
+    }
+  
+    .icon-box i {
+      font-size: 35px !important; /* Adjust icon size */
+      color: #12372A;
+    }
+  
+    .icon-box p {
+      font-size: 12px !important; /* Adjust text size */
+      color: #12372A;
+      margin-top: 10px;
+    }
+  
+    /* PhilHealth section adjustments */
+    .col-md-6.text-center img {
+      max-width: 100%;
+    }
+  
+    .col-md-6.text-center h4 {
+      font-size: 14px;
+    }
+  
+    .col-md-6.text-center p {
+      font-size: 13px;
+      width: 100%;
+    }
+  
+    /* Footer adjustments */
+    footer {
+      font-size: 12px;
+      text-align: center;
+      padding: 10px;
+    }
+  }
+
+  @media (max-width: 320px) {
+    /* General body adjustments for smaller screens */
+    body {
+      overflow-y: auto;
+      padding: 5px;
+    }
+  
+    /* Navbar adjustments */
+    .navbar {
+      padding: 8px;
+    }
+  
+    .navbar-brand strong {
+      font-size: 14px;
+    }
+  
+    .navbar-logo {
+      height: 25px;
+    }
+  
+    /* Icon section adjustments */
+    .icon-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px; /* Reduced gap between boxes */
+    }
+  
+    .icon-box {
+      width: 80px !important; /* Smaller width */
+      height: 100px !important; /* Smaller height */
+      padding: 5px!important;
+      text-align: center;
+      background-color: #f8f9fa;
+      border-radius: 8px;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+  
+    .icon-box i {
+      font-size: 28px !important; /* Smaller icon size */
+      color: #12372A;
+    }
+  
+    .icon-box p {
+      font-size: 10px !important; /* Smaller text size */
+      color: #12372A;
+      margin-top: 5px;
+    }
+  
+    /* Welcome message adjustments */
+    .welcome-message h3 {
+      font-size: 18px;
+    }
+  
+    .welcome-message p {
+      font-size: 12px;
+    }
+  
+    /* PhilHealth section adjustments */
+    .col-md-6.text-center img {
+      max-width: 80%; /* Smaller image size */
+    }
+  
+    .col-md-6.text-center h4 {
+      font-size: 12px;
+    }
+  
+    .col-md-6.text-center p {
+      font-size: 11px;
+      width: 100%;
+    }
+  
+    /* Footer adjustments */
+    footer {
+      font-size: 10px;
+      text-align: center;
+      padding: 5px;
+    }
+  }
+  
+  

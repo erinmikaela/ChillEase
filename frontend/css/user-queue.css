@@ -70,6 +70,10 @@ body {
     color: #ADBC9F; /* Light green color for icons on hover */
     transform: scale(1.1); /* Slightly enlarge icon on hover */
   }
+  .navbar a:hover, .navbar .queueease:hover {
+    color: #ADBC9F; /* Light green hover effect */
+    transform: scale(1.05); /* Slightly enlarge on hover */
+  }
   
   /* Queue Status Section Styling */
   .queue-section {
@@ -177,7 +181,7 @@ body {
   /* Responsive Design for Smaller Screens */
   @media (max-width: 768px) {
     .container {
-      padding: 20px;
+      padding: 50px;
       width: 90%;
     }
   

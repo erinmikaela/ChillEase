@@ -42,6 +42,26 @@ body, h1, h2, h3, h4, h5, h6, p, a {
     color: #ADBC9F; /* Light green hover effect */
     transform: scale(1.05); /* Slightly enlarge on hover */
   }
+
+/* Logo Styling */
+.navbar-logo {
+    height: 40px; /* Adjust logo height */
+    width: auto; /* Maintain aspect ratio */
+    margin-right: 7px; /* Space between logo and text */
+  }
+  
+  /* Icon Styling in Navbar */
+  .navbar a i, .navbar .queueease i {
+    margin-right: 8px; /* Add space between icon and text */
+    color: inherit; /* Ensures icon color matches the text */
+    transition: color 0.3s ease, transform 0.3s ease; /* Smooth color transition */
+  }
+  
+  /* Hover effect for navbar icons */
+  .navbar a:hover i, .navbar .queueease:hover i {
+    color: #ADBC9F; /* Light green color for icons on hover */
+    transform: scale(1.1); /* Slightly enlarge icon on hover */
+  }
     
 
   /* Centering Main Content */
@@ -220,3 +240,81 @@ footer a:hover {
     padding: 10px;
   }
 }
+
+/* Responsive Design for Tablets */
+@media (max-width: 1024px) {
+  .navbar {
+    padding: 10px 15px;
+  }
+
+  .navbar a {
+    font-size: 0.95rem; /* Slightly smaller font size */
+  }
+
+  .container-centered {
+    padding: 15px;
+  }
+
+  form.card {
+    padding: 15px;
+  }
+
+  table th, table td {
+    padding: 8px; /* Adjust padding */
+  }
+}
+
+/* Responsive Design for Mobile Devices */
+@media (max-width: 768px) {
+  .navbar {
+    padding: 10px 15px;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .navbar a {
+    font-size: 0.9rem; /* Slightly smaller font size */
+  }
+
+  .container-centered {
+    padding: 10px;
+  }
+
+  form.card {
+    padding: 10px;
+  }
+
+  table th, table td {
+    padding: 6px; /* Adjust padding */
+  }
+}
+
+/* Responsive Design for Small Mobile Devices */
+@media (max-width: 480px) {
+  .navbar {
+    padding: 8px 10px; /* Adjust padding */
+  }
+
+  .navbar a {
+    font-size: 0.85rem; /* Further reduce font size */
+  }
+
+  .container-centered {
+    padding: 5px;
+  }
+
+  form.card {
+    padding: 5px;
+  }
+
+  table th, table td {
+    padding: 4px; /* Adjust padding */
+  }
+}
+
+@media (max-width: 768px) {
+    .queueease {
+      font-size: 0.5rem; /* Adjust font size for mobile */
+      justify-content: center; /* Center the content */
+    }
+  }

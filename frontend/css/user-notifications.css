@@ -1,55 +1,77 @@
-/* General Body Styling */
-body {
-    background-color: #FBFADA; /* Light background color */
-    font-family: 'Poppins', sans-serif; /* Clean font for readability */
-    padding-bottom: 60px; /* Adds space for footer */
-    margin: 0; /* Remove any default margin */
-    display: flex;
-    justify-content: center; /* Center content horizontally */
-    align-items: flex-start; /* Align items at the top of the screen */
-    min-height: 100vh;
-    flex-direction: column; /* Stack content vertically */
-  }
-  
-  /* Navbar Styles */
-  .navbar {
-    background-color: #12372A;
-    position: fixed; /* Make navbar stay at the top */
-    width: 100%; /* Ensure it spans the full width */
-    top: 0;
-    left: 0;
-    z-index: 1000; /* Keep navbar above other content */
-    height: 60px; /* Set height for the navbar */
-  }
-
-  .navbar a, .navbar .queueease {
-    color: #FBFADA; /* Light yellow text */
-    text-decoration: none;
-    font-size: 1.1rem; /* Slightly larger text for visibility */
-    display: flex;
-    align-items: center; /* Align text and icons */
-    padding: 8px 15px; /* Padding for better spacing */
-    transition: color 0.3s ease, transform 0.3s ease; /* Smooth color transition */
-  }
-
-  .navbar a:hover, .navbar .queueease:hover {
-    color: #ADBC9F; /* Light green hover effect */
-    transform: scale(1.05); /* Slightly enlarge on hover */
-  }
-
-  /* Icon Styling in Navbar */
-  .navbar a i, .navbar .queueease i {
-    margin-right: 8px; /* Add space between icon and text */
-    color: inherit; /* Ensures icon color matches the text */
-    transition: color 0.3s ease, transform 0.3s ease; /* Smooth color transition */
-  }
-
-  /* Hover effect for navbar icons */
-  .navbar a:hover i, .navbar .queueease:hover i {
-    color: #ADBC9F; /* Light green color for icons on hover */
-    transform: scale(1.1); /* Slightly enlarge icon on hover */
-  }
+    /* General Body Styling */
+    body {
+        background-color: #FBFADA; /* Light background color */
+        font-family: 'Poppins', sans-serif; /* Clean font for readability */
+        padding-bottom: 60px; /* Adds space for footer */
+        margin: 0; /* Remove any default margin */
+        display: flex;
+        justify-content: center; /* Center content horizontally */
+        align-items: flex-start; /* Align items at the top of the screen */
+        min-height: 100vh;
+        flex-direction: column; /* Stack content vertically */
+      }
+      
+      /* Navbar Styles */
+    .navbar {
+      background: #12372A; 
+      position: fixed; /* Make navbar stay at the top */
+      width: 100%; /* Ensure it spans the full width */
+      top: 0;
+      left: 0;
+      z-index: 1000; /* Keep navbar above other content */
+      height: 60px; /* Set height for the navbar */
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 20px; /* Adjust padding */
+    }
     
+    /* Back Link Styling */
+    .navbar a {
+      color: #FBFADA; /* Light yellow text */
+      text-decoration: none;
+      font-size: 1rem; /* Slightly larger text for visibility */
+      display: flex;
+      align-items: center; /* Align text and icons */
+      padding: 8px 15px; /* Padding for better spacing */
+      transition: color 0.3s ease, transform 0.3s ease; /* Smooth color transition */
+    }
+    
+    /* Hover effects for the navbar */
+    .navbar a:hover {
+      color: #ADBC9F; /* Light green hover effect */
+      transform: scale(1.05); /* Slightly enlarge on hover */
+    }
+    
+    /* QueueEase text with logo */
+    .queueease {
+      display: flex;
+      align-items: center;
+      font-size: 1.25rem; /* Adjust font size */
+      color: #FBFADA; /* Light yellow text */
+    }
+    
+    /* Logo Styling */
+    .navbar-logo {
+      height: 40px; /* Adjust logo height */
+      width: auto; /* Maintain aspect ratio */
+      margin-right: 7px; /* Space between logo and text */
+    }
+    
+    /* Icon Styling in Navbar */
+    .navbar a i, .navbar .queueease i {
+      margin-right: 8px; /* Add space between icon and text */
+      color: inherit; /* Ensures icon color matches the text */
+      transition: color 0.3s ease, transform 0.3s ease; /* Smooth color transition */
+    }
+    
+    /* Hover effect for navbar icons */
+    .navbar a:hover i, .navbar .queueease:hover i {
+      color: #ADBC9F; /* Light green color for icons on hover */
+      transform: scale(1.1); /* Slightly enlarge icon on hover */
+    }
+        
+        
     /* Centering Container */
   .container-centered {
       display: flex;
@@ -151,4 +173,74 @@ body {
       padding: 8px 16px; /* Adjust button padding for better mobile feel */
     }
   }
-  
+
+/* Responsive Design for Tablets */
+@media (max-width: 1024px) {
+  .navbar {
+    padding: 10px 15px;
+  }
+
+  .navbar a {
+    font-size: 0.95rem; /* Slightly smaller font size */
+  }
+
+  .content-container {
+    padding: 20px;
+  }
+
+  #notificationsContainer {
+    max-height: 250px; /* Adjust max height */
+  }
+
+  #seeAllBtn {
+    padding: 8px 16px; /* Adjust button padding */
+  }
+}
+
+/* Responsive Design for Mobile Devices */
+@media (max-width: 768px) {
+  .navbar {
+    padding: 10px 15px;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .navbar a {
+    font-size: 0.9rem; /* Slightly smaller font size */
+  }
+
+  .content-container {
+    padding: 15px;
+  }
+
+  #notificationsContainer {
+    max-height: 200px; /* Adjust max height */
+  }
+
+  #seeAllBtn {
+    padding: 8px 16px; /* Adjust button padding */
+  }
+}
+
+/* Responsive Design for Small Mobile Devices */
+@media (max-width: 480px) {
+  .navbar {
+    padding: 8px 10px; /* Adjust padding */
+  }
+
+  .navbar a {
+    font-size: 0.85rem; /* Further reduce font size */
+  }
+
+  .content-container {
+    padding: 10px;
+  }
+
+  #notificationsContainer {
+    max-height: 150px; /* Adjust max height */
+  }
+
+  #seeAllBtn {
+    padding: 6px 12px; /* Adjust button padding */
+  }
+}
