@@ -1,308 +1,318 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Notifications Management | QueueEase</title>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Notifications Management | QueueEase</title>
 
-		<!-- Google Font: Poppins -->
-		<link
-			href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
-			rel="stylesheet"
-		/>
+    <!-- Google Font: Poppins -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
+        rel="stylesheet"
+    />
 
-		<!-- Bootstrap CSS -->
-		<link
-			href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
-			rel="stylesheet"
-		/>
+    <!-- Bootstrap CSS -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    />
 
-		<!-- Font Awesome for icons -->
-		<link
-			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-			rel="stylesheet"
-		/>
+    <!-- Font Awesome for icons -->
+    <link
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+        rel="stylesheet"
+    />
 
-		<!-- Custom Stylesheet -->
-		<link rel="stylesheet" href="css/notifications.css" />
-		<script src="/socket.io/socket.io.js"></script>
-		<script
-			type="text/javascript"
-			src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"
-		></script>
-		<script type="text/javascript">
-			(function () {
-				emailjs.init("_3-17_pX9sbhDPRK0");
-			})();
-		</script>
-		<script>
-			const socket = io();
-			let allNotifications = [];
-			let showingAll = false;
+    <!-- Custom Stylesheet -->
+    <link rel="stylesheet" href="css/notifications.css" />
 
-			// Function to send a personalized notification
-			async function sendNotification() {
-				try {
-					const userId = document.getElementById("userSelect").value;
-					const message = document
-						.getElementById("notificationMessage")
-						.value.trim();
+    <!-- Socket.io -->
+    <script src="/socket.io/socket.io.js"></script>
 
-					if (!userId || userId === "select") {
-						alert("Please select a user.");
-						return;
-					}
+    <!-- EmailJS -->
+    <script
+        type="text/javascript"
+        src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"
+    ></script>
+    <script type="text/javascript">
+        (function () {
+            emailjs.init("__j-1CZ-eAPkBHldb"); // Replace with your EmailJS user ID
+        })();
+    </script>
 
-					if (!message) {
-						alert("Notification message cannot be empty.");
-						return;
-					}
+    <script>
+        const socket = io();
+        let allNotifications = [];
+        let showingAll = false;
 
-					const endpoint = "/api/admin/notification";
-					const body = { user_id: userId, message };
+        // Function to send a personalized notification
+        async function sendNotification() {
+            try {
+                const userId = document.getElementById("userSelect").value;
+                const message = document
+                    .getElementById("notificationMessage")
+                    .value.trim();
 
-					const response = await fetch(endpoint, {
-						method: "POST",
-						headers: { "Content-Type": "application/json" },
-						body: JSON.stringify(body),
-					});
+                if (!userId || userId === "select") {
+                    alert("Please select a user.");
+                    return;
+                }
 
-					if (!response.ok) {
-						throw new Error("Failed to send notification.");
-					}
+                if (!message) {
+                    alert("Notification message cannot be empty.");
+                    return;
+                }
 
-					const result = await response.json();
-					alert(result.message);
+                const endpoint = "/api/admin/notification";
+                const body = { userId, message };
 
-					// Send emails using EmailJS for each notification
-					if (result.notifications && Array.isArray(result.notifications)) {
-						result.notifications.forEach((emailData) => {
-							if (
-								emailData.email &&
-								emailData.firstName &&
-								emailData.dynamicMessage
-							) {
-								sendEmailNotification(
-									emailData.email,
-									emailData.firstName,
-									emailData.dynamicMessage
-								);
-							} else {
-								console.warn(
-									"Email details missing in the notification:",
-									emailData
-								);
-							}
-						});
-					} else {
-						console.warn("No notifications found in the response.");
-					}
+                const response = await fetch(endpoint, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(body),
+                });
 
-					// Reset fields after success
-					document.getElementById("notificationMessage").value = "";
-					document.getElementById("userSelect").value = "select";
-				} catch (error) {
-					console.error("Error sending notification:", error);
-					alert("Error sending notification. Please try again.");
-				}
-			}
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || "Failed to send notification.");
+                }
 
-			// Function to send the email using EmailJS
-			async function sendEmailNotification(toEmail, firstName, message) {
-				console.log("Preparing to send email to:", toEmail);
-				console.log("Name:", firstName);
-				console.log("Message:", message);
-				try {
-					const response = await emailjs.send(
-						"service_ectj92j", // Replace with your EmailJS service ID
-						"template_on7sfyq", // Replace with your EmailJS template ID
-						{
-							to_email: toEmail,
-							name: firstName,
-							message: message,
-						}
-					);
-					console.log("Email sent successfully:", response);
-				} catch (error) {
-					console.error("Error sending email:", error);
-				}
-			}
+                const result = await response.json();
+                alert(result.message);
 
-			// Function to load users into the dropdown
-			async function loadUsers() {
-				try {
-					const response = await fetch("/api/admin/users");
-					if (!response.ok) {
-						throw new Error("Failed to fetch users.");
-					}
+                // Send emails using EmailJS for each notification
+                if (result.notifications && Array.isArray(result.notifications)) {
+                    result.notifications.forEach((emailData) => {
+                        if (
+                            emailData.email &&
+                            emailData.firstName &&
+                            emailData.dynamicMessage
+                        ) {
+                            sendEmailNotification(
+                                emailData.email,
+                                emailData.firstName,
+                                emailData.dynamicMessage
+                            );
+                        } else {
+                            console.warn(
+                                "Email details missing in the notification:",
+                                emailData
+                            );
+                        }
+                    });
+                } else {
+                    console.warn("No notifications found in the response.");
+                }
 
-					const users = await response.json();
-					const userSelect = document.getElementById("userSelect");
+                // Reset fields after success
+                document.getElementById("notificationMessage").value = "";
+                document.getElementById("userSelect").value = "select";
+            } catch (error) {
+                console.error("Error sending notification:", error);
+                alert("Error sending notification. Please try again.");
+            }
+        }
 
-					// Clear existing options except the placeholder
-					userSelect.innerHTML = "";
+        // Function to send the email using EmailJS
+        async function sendEmailNotification(toEmail, firstName, message) {
+            console.log("Preparing to send email to:", toEmail);
+            console.log("Name:", firstName);
+            console.log("Message:", message);
+            try {
+                const response = await emailjs.send(
+                    "service_dr57nut",    // Replace with your EmailJS service ID
+                    "template_5tl23ye",   // Replace with your EmailJS template ID
+                    {
+                        to_email: toEmail,
+                        name: firstName,
+                        message: message,
+                    }
+                );
+                console.log("Email sent successfully:", response);
+            } catch (error) {
+                console.error("Error sending email:", error);
+            }
+        }
 
-					const placeholderOption = document.createElement("option");
-					placeholderOption.value = "select";
-					placeholderOption.textContent = "Select a User";
-					placeholderOption.disabled = true;
-					placeholderOption.selected = true;
-					userSelect.appendChild(placeholderOption);
+        // Function to load users into the dropdown
+        async function loadUsers() {
+            try {
+                const response = await fetch("/api/admin/users");
+                if (!response.ok) {
+                    throw new Error("Failed to fetch users.");
+                }
 
-					users.forEach((user) => {
-						const option = document.createElement("option");
-						option.value = user.id;
-						option.textContent = `${user.first_name} ${user.last_name} (${user.email})`;
-						userSelect.appendChild(option);
-					});
-				} catch (error) {
-					console.error("Error loading users:", error);
-					alert("Error loading users. Please refresh the page.");
-				}
-			}
+                const users = await response.json();
+                const userSelect = document.getElementById("userSelect");
 
-			// Function to populate the notifications table
-			async function populateNotifications() {
-				try {
-					const response = await fetch("/api/admin/notifications");
-					if (!response.ok) {
-						throw new Error("Failed to fetch notifications.");
-					}
+                // Clear existing options except the placeholder
+                userSelect.innerHTML = "";
 
-					allNotifications = await response.json();
-					renderNotifications();
-				} catch (error) {
-					console.error("Error fetching notifications:", error);
-					alert("Error fetching notifications.");
-				}
-			}
+                const placeholderOption = document.createElement("option");
+                placeholderOption.value = "select";
+                placeholderOption.textContent = "Select a User";
+                placeholderOption.disabled = true;
+                placeholderOption.selected = true;
+                userSelect.appendChild(placeholderOption);
 
-			// Function to render notifications based on the current view
-			function renderNotifications() {
-				const notificationsTable =
-					document.getElementById("notificationsTable");
-				notificationsTable.innerHTML = ""; // Clear existing rows
+                users.forEach((user) => {
+                    const option = document.createElement("option");
+                    option.value = user.id;
+                    option.textContent = `${user.first_name} ${user.last_name} (${user.email})`;
+                    userSelect.appendChild(option);
+                });
+            } catch (error) {
+                console.error("Error loading users:", error);
+                alert("Error loading users. Please refresh the page.");
+            }
+        }
 
-				// Sort notifications by created_at or ID in descending order
-				const sortedNotifications = allNotifications.sort((a, b) =>
-					b.created_at.localeCompare(a.created_at)
-				);
+        // Function to populate the notifications table
+        async function populateNotifications() {
+            try {
+                const response = await fetch("/api/admin/notifications");
+                if (!response.ok) {
+                    throw new Error("Failed to fetch notifications.");
+                }
 
-				let notificationsToDisplay = sortedNotifications;
+                allNotifications = await response.json();
+                renderNotifications();
+            } catch (error) {
+                console.error("Error fetching notifications:", error);
+                alert("Error fetching notifications.");
+            }
+        }
 
-				if (!showingAll) {
-					notificationsToDisplay = sortedNotifications.slice(0, 10); // Show last 10, newest first
-				}
+        // Function to render notifications based on the current view
+        function renderNotifications() {
+            const notificationsTable =
+                document.getElementById("notificationsTable");
+            notificationsTable.innerHTML = ""; // Clear existing rows
 
-				notificationsToDisplay.forEach((notif) => {
-					const row = document.createElement("tr");
-					row.innerHTML = `
-                  <td>${notif.user_id}</td>
-                  <td>${notif.message}</td>
-                  <td>${new Date(notif.created_at).toLocaleString()}</td>
-              `;
-					notificationsTable.appendChild(row);
-				});
+            // Sort notifications by created_at in descending order
+            const sortedNotifications = allNotifications.sort((a, b) =>
+                b.created_at.localeCompare(a.created_at)
+            );
 
-				// Update the toggle button text
-				const toggleButton = document.getElementById("toggleNotifications");
-				if (showingAll) {
-					toggleButton.textContent = "Show Recent 10";
-				} else {
-					toggleButton.textContent = "See All";
-				}
-			}
+            let notificationsToDisplay = sortedNotifications;
 
-			// Function to toggle between showing all notifications and recent 10
-			function toggleNotifications() {
-				showingAll = !showingAll;
-				renderNotifications();
-			}
+            if (!showingAll) {
+                notificationsToDisplay = sortedNotifications.slice(0, 10); // Show last 10, newest first
+            }
 
-			// Auto-refresh notifications every 1 second
-			setInterval(populateNotifications, 1000);
+            notificationsToDisplay.forEach((notif) => {
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${notif.user_id}</td>
+                    <td>${notif.message}</td>
+                    <td>${new Date(notif.created_at).toLocaleString()}</td>
+                `;
+                notificationsTable.appendChild(row);
+            });
 
-			// Listen for real-time notification events
-			socket.on("notificationSent", () => {
-				populateNotifications();
-			});
+            // Update the toggle button text
+            const toggleButton = document.getElementById("toggleNotifications");
+            if (showingAll) {
+                toggleButton.textContent = "Show Recent 10";
+            } else {
+                toggleButton.textContent = "See All";
+            }
+        }
 
-			document.addEventListener("DOMContentLoaded", () => {
-          loadUsers();
-          populateNotifications();
-      });
-		</script>
-	</head>
-	<body>
-		<header>
-			<div class="navbar">
-				<a href="admin-dashboard.html">
-					<i class="fas fa-arrow-left"></i> Go back to Dashboard
-				</a>
-				<span class="queueease">QueueEase</span>
-			</div>
-		</header>
+        // Function to toggle between showing all notifications and recent 10
+        function toggleNotifications() {
+            showingAll = !showingAll;
+            renderNotifications();
+        }
 
-		<main>
-			<div class="container">
-				<section>
-					<h2><i class="fas fa-bell"></i> Send Notification</h2>
-					<form>
-						<div class="mb-3">
-							<label for="userSelect" class="form-label">Select User:</label>
-							<select id="userSelect" class="form-select" required>
-								<!-- Dynamically populated -->
-							</select>
-						</div>
+        // Auto-refresh notifications every 5 seconds
+        setInterval(populateNotifications, 5000);
 
-						<div class="mb-3">
-							<label for="notificationMessage" class="form-label"
-								>Notification Message:</label
-							>
-							<textarea
-								id="notificationMessage"
-								class="form-control"
-								placeholder="Type your notification here"
-								rows="5"
-								required
-							></textarea>
-						</div>
+        // Listen for real-time notification events
+        socket.on("notificationSent", () => {
+            populateNotifications();
+        });
 
-						<button
-							type="button"
-							class="btn btn-success"
-							onclick="sendNotification()"
-						>
-							Send Notification
-						</button>
-					</form>
-				</section>
-			</div>
-<!-- new-->
-      <section>
-        <h2>All Notifications</h2>
-        <table border="1">
-            <thead>
-                <tr>
-                    <th>User ID</th>
-                    <th>Message</th>
-                    <th>Timestamp</th>
-                </tr>
-            </thead>
-            <tbody id="notificationsTable">
-                <!-- Notifications will be dynamically populated here -->
-            </tbody>
-        </table>
-        <br>
-        <button id="toggleNotifications" onclick="toggleNotifications()">See All</button>
-      </section>
-<!-- new-->
-		</main>
+        document.addEventListener("DOMContentLoaded", () => {
+            loadUsers();
+            populateNotifications();
+        });
+    </script>
+</head>
+<body>
+    <header>
+		<div class="navbar">
+			<a href="admin-dashboard.html">
+				<i class="fas fa-arrow-left"></i> Go back to Dashboard
+			</a>
+			<span class="queueease">QueueEase</span>
+		</div>
+    </header>
 
-		<footer>
-			<p>&copy; 2024 QueueEase. All rights reserved.</p>
-		</footer>
+    <main>
+        <div class="container">
+            <!-- Send Notification Section -->
+            <section class="mb-5">
+                <h2><i class="fas fa-bell"></i> Send Notification</h2>
+                <form id="sendNotificationForm" onsubmit="event.preventDefault(); sendNotification();">
+                    <div class="mb-3">
+                        <label for="userSelect" class="form-label">Select User:</label>
+                        <select id="userSelect" class="form-select" required>
+                            <!-- Dynamically populated -->
+                        </select>
+                    </div>
 
-		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-	</body>
+                    <div class="mb-3">
+                        <label for="notificationMessage" class="form-label">Notification Message:</label>
+                        <textarea
+                            id="notificationMessage"
+                            class="form-control"
+                            placeholder="Type your notification here"
+                            rows="5"
+                            required
+                        ></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas fa-paper-plane"></i> Send Notification
+                    </button>
+                </form>
+            </section>
+
+            <hr />
+
+            <!-- Notifications Table Section -->
+            <section>
+                <h2><i class="fas fa-list"></i> All Notifications</h2>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th>User ID</th>
+                                <th>Message</th>
+                                <th>Timestamp</th>
+                            </tr>
+                        </thead>
+                        <tbody id="notificationsTable">
+                            <!-- Notifications will be dynamically populated here -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="d-flex justify-content-end">
+                    <button id="toggleNotifications" class="btn btn-primary" onclick="toggleNotifications()">
+                        See All
+                    </button>
+                </div>
+            </section>
+        </div>
+    </main>
+
+	<footer>
+		<p>&copy; 2024 QueueEase. All rights reserved.</p>
+	</footer>
+
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
 </html>
