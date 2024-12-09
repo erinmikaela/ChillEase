@@ -320,3 +320,108 @@ button:hover i {
     max-width: 100%; 
     max-height: 300px; /* Limit the chart height */
 }
+
+/* ----- Bootstrap Enhancements ----- */
+
+/* Make the chart container full width on smaller screens */
+@media (max-width: 576px) {
+    .chart-container {
+        width: 100%; /* Full width on extra small devices */
+        padding: 5px; /* Reduced padding for smaller screens */
+    }
+
+    /* Increase chart size on phones */
+    #reportChart {
+        max-height: 400px; /* Allow more height for better visibility */
+    }
+
+    /* Make text and buttons larger on phones */
+    body {
+        font-size: 1.1rem; /* Increase base font size */
+    }
+
+    h1 {
+        font-size: 2rem; /* Increase main heading size */
+    }
+
+    h2 {
+        font-size: 1.5rem; /* Increase subheading size */
+    }
+
+    label {
+        font-size: 1.1rem; /* Increase label font size */
+    }
+
+    .form-label {
+        font-size: 1.1rem; /* Ensure form labels are larger */
+    }
+
+    .form-select {
+        font-size: 1.1rem; /* Increase select input font size */
+        padding: 0.5rem; /* Increase padding for better touch targets */
+    }
+
+    .btn-primary {
+        font-size: 1.1rem; /* Increase button text size */
+        padding: 0.6rem 1.2rem; /* Increase button padding */
+    }
+
+    table th, table td {
+        font-size: 1.1rem; /* Increase table font size */
+        padding: 12px; /* Increase table cell padding */
+    }
+
+    table td button {
+        font-size: 1rem; /* Increase button font size within tables */
+        padding: 8px 12px; /* Increase button padding */
+    }
+
+    footer {
+        font-size: 12px; /* Slightly larger footer text */
+        padding: 12px; /* Increase footer padding */
+    }
+
+    /* Increase navbar font size and padding on phones */
+    .navbar a, .navbar .queueease, .navbar-text {
+        font-size: 1.2rem; /* Larger font size */
+        padding: 12px 20px; /* Increased padding */
+    }
+
+    /* Increase icon sizes on phones */
+    .navbar a i, .navbar .queueease i, .navbar-text i {
+        font-size: 1.5rem; /* Larger icons */
+    }
+
+    /* Adjust chart container for better visibility */
+    .chart-container {
+        padding: 15px; /* Increase padding for larger charts */
+    }
+}
+
+/* Ensure the footer sticks to the bottom on small screens */
+@media (max-width: 576px) {
+    body {
+        flex: 1 0 auto;
+    }
+}
+
+/* Ensure forms stack vertically on small screens */
+@media (max-width: 768px) {
+    #reportForm .col-md-6 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+}
+
+/* Optional: Enhance button sizes on touch devices */
+@media (hover: none) and (pointer: coarse) {
+    table td button {
+        padding: 10px 15px;
+        font-size: 1rem;
+    }
+
+    .navbar a, .navbar .queueease, .navbar-text {
+        padding: 12px 20px;
+        font-size: 1.2rem;
+    }
+}
