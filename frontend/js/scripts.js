@@ -164,3 +164,88 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 });
+
+
+
+document.addEventListener('DOMContentLoaded', function() {
+  // Get the warning message and the login/register buttons
+  const geoWarning = document.getElementById('geoWarning');
+  const loginButton = document.getElementById('loginButton');
+  const registerButton = document.getElementById('registerButton');
+
+  // Initially hide the buttons
+  loginButton.style.display = 'none';
+  registerButton.style.display = 'none';
+
+  // Initialize the Socket.IO connection
+  const socket = io(); // Automatically connects to the server on the same domain
+
+  socket.on('connect', () => {
+    console.log('Connected to the server');
+  });
+
+  // Function to validate the location
+  function validateLocation(position) {
+    const latitude = position.coords.latitude;
+    const longitude = position.coords.longitude;
+
+    console.log('User Location:', latitude, longitude); // Debugging: Check user location
+
+    // Hardcode the allowed latitude and longitude as you provided:
+    const ALLOWED_LATITUDE = 14.463976595354648;
+    const ALLOWED_LONGITUDE = 121.02209109580798;
+    const ALLOWED_RADIUS = 1000; // 1 km radius
+
+    // Log the approved area coordinates
+    console.log('Approved Area - Latitude:', ALLOWED_LATITUDE, 'Longitude:', ALLOWED_LONGITUDE);
+
+    // Calculate the distance between the current location and the allowed location
+    const distance = getDistance(latitude, longitude, ALLOWED_LATITUDE, ALLOWED_LONGITUDE);
+
+    console.log('Calculated Distance:', distance); // Log the distance
+
+    // Adjusting logic: Show warning and hide buttons if outside the range
+    if (distance > ALLOWED_RADIUS) {
+      console.log('Location is outside the allowed range.');
+      geoWarning.style.display = 'block';  // Show the warning message
+      loginButton.style.display = 'none';  // Hide login button
+      registerButton.style.display = 'none';  // Hide register button
+    } else {
+      console.log('Location is within the allowed range.');
+      geoWarning.style.display = 'none';  // Hide the warning if location is valid
+      loginButton.style.display = 'inline-block';  // Show login button
+      registerButton.style.display = 'inline-block';  // Show register button
+    }
+  }
+
+  // Function to calculate the distance between two geographic coordinates (Haversine formula)
+  function getDistance(lat1, lon1, lat2, lon2) {
+    const R = 6371; // Radius of Earth in km
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLon = (lon2 - lon1) * Math.PI / 180;
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+      Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    const distance = R * c; // Distance in km
+
+    return distance * 1000; // Convert distance to meters
+  }
+
+  // Check if geolocation is available and get the user's location
+  if (navigator.geolocation) {
+    console.log('Geolocation is available.'); // Debugging
+    navigator.geolocation.getCurrentPosition(validateLocation, function(error) {
+      console.error('Error getting location:', error); // Debugging
+      geoWarning.style.display = 'block';  // Show warning if there is an error with geolocation
+      loginButton.style.display = 'none';  // Hide login button
+      registerButton.style.display = 'none';  // Hide register button
+    });
+  } else {
+    console.log('Geolocation is not available in this browser.'); // Debugging
+    geoWarning.style.display = 'block';  // Show warning if geolocation is not available
+    loginButton.style.display = 'none';  // Hide login button
+    registerButton.style.display = 'none';  // Hide register button
+  }
+});
