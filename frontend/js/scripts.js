@@ -192,8 +192,8 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('User Location:', latitude, longitude); // Debugging: Check user location
 
     // Hardcode the allowed latitude and longitude as you provided:
-    const ALLOWED_LATITUDE = 14.463976595354648;
-    const ALLOWED_LONGITUDE = 121.02209109580798;
+    const ALLOWED_LATITUDE = 14.587286645798374;
+    const ALLOWED_LONGITUDE = 120.98445460930279;
     const ALLOWED_RADIUS = 5000; // 1 km radius
 
     // Log the approved area coordinates
