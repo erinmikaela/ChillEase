@@ -2,8 +2,8 @@ const express = require('express');
 const router = express.Router();
 
 // Environment variables for allowed location
-const allowedLatitude = parseFloat(process.env.ALLOWED_LATITUDE || '14.463976595354648');
-const allowedLongitude = parseFloat(process.env.ALLOWED_LONGITUDE || '121.02209109580798');
+const allowedLatitude = parseFloat(process.env.ALLOWED_LATITUDE || '14.587286645798374');
+const allowedLongitude = parseFloat(process.env.ALLOWED_LONGITUDE || '120.98445460930279');
 const allowedRadius = parseFloat(process.env.ALLOWED_RADIUS || '5000'); // in meters
 
 // Helper function to calculate distance between two coordinates
