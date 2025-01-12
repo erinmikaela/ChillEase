@@ -184,8 +184,12 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('Connected to the server');
   });
 
+  //Buttons
+  loginButton.style.display = 'inline-block';  
+  registerButton.style.display = 'inline-block';
+
   // Function to validate the location
-  function validateLocation(position) {
+  /*function validateLocation(position) {
     const latitude = position.coords.latitude;
     const longitude = position.coords.longitude;
 
@@ -247,5 +251,5 @@ document.addEventListener('DOMContentLoaded', function() {
     geoWarning.style.display = 'block';  // Show warning if geolocation is not available
     loginButton.style.display = 'none';  // Hide login button
     registerButton.style.display = 'none';  // Hide register button
-  }
+  }*/
 });
