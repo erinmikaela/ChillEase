@@ -57,28 +57,14 @@ async function generateReport() {
     }
 }
 
-async function generatePDF() {
-    const reportContent = document.getElementById('reportContent').innerHTML;
-    const response = await fetch('/reports/api/generate-pdf', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ htmlContent: reportContent })
+async function exportAsImage() {
+    const reportContent = document.getElementById('reportContent');
+    html2canvas(reportContent).then(canvas => {
+        const link = document.createElement('a');
+        link.href = canvas.toDataURL('image/png');
+        link.download = 'report.png';
+        link.click();
     });
-
-    if (response.ok) {
-        const blob = await response.blob();
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'report.pdf';
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-    } else {
-        alert('Failed to generate PDF');
-    }
 }
 
 function renderChart(reportType, data) {

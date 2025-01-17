@@ -17,6 +17,8 @@
     <!-- Chart.js and ChartDataLabels Plugin -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+    <!-- html2canvas for exporting as image -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
 <body>
    <!-- Navigation Bar -->
@@ -73,7 +75,7 @@
                 <canvas id="reportChart"></canvas>
             </div>
             <div class="text-center mt-4">
-                <button type="button" class="btn btn-secondary" onclick="generatePDF()">Download PDF</button>
+                <button type="button" class="btn btn-secondary" onclick="exportAsImage()">Download Report</button>
             </div>
         </div>
     </div>

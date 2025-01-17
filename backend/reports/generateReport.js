@@ -3,7 +3,7 @@
 const express = require('express');
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
-const puppeteer = require('puppeteer'); // Add puppeteer
+const fetch = require('node-fetch'); // Add node-fetch
 
 const router = express.Router();
 
@@ -225,17 +225,70 @@ router.get('/api/service-usage-trends', (req, res) => {
   });
 });
 
-// New endpoint to generate PDF
+// New endpoint to generate PDF using PDFShift.io
 router.post('/api/generate-pdf', async (req, res) => {
-  const { htmlContent } = req.body;
+  const { reportType, period, date } = req.body;
+
+  let endpoint = '';
+  switch (reportType) {
+    case 'service-utilization':
+      endpoint = 'service-utilization';
+      break;
+    case 'user-registrations':
+      endpoint = 'user-registrations';
+      break;
+    case 'daily-peak-times':
+      endpoint = 'daily-peak-times';
+      break;
+    case 'transaction-status':
+      endpoint = 'transaction-status';
+      break;
+    case 'service-usage-trends':
+      endpoint = 'service-usage-trends';
+      break;
+    default:
+      return res.status(400).send('Invalid report type');
+  }
+
+  const url = date ? `${req.protocol}://${req.get('host')}/reports/api/${endpoint}?date=${date}` : `${req.protocol}://${req.get('host')}/reports/api/${endpoint}?period=${period}`;
+  const response = await fetch(url);
+  const data = await response.json();
+
+  if (data.error) {
+    return res.status(500).send('Error fetching report data');
+  }
+
+  const htmlContent = `
+    <html>
+      <head>
+        <title>${reportType} Report</title>
+      </head>
+      <body>
+        <h1>${reportType} Report</h1>
+        <pre>${JSON.stringify(data, null, 2)}</pre>
+      </body>
+    </html>
+  `;
 
   try {
-    const browser = await puppeteer.launch();
-    const page = await browser.newPage();
-    await page.setContent(htmlContent, { waitUntil: 'networkidle0' });
-    const pdfBuffer = await page.pdf({ format: 'A4' });
+    const pdfResponse = await fetch('https://api.pdfshift.io/v3/convert/pdf', {
+      method: 'POST',
+      headers: {
+        Authorization: 'Basic ' + Buffer.from('api:YOUR_PDFSHIFT_API_KEY').toString('base64'), // Replace with your actual API key
+        'Content-type': 'application/json'
+      },
+      body: JSON.stringify({
+        source: htmlContent,
+        landscape: false,
+        use_print: false
+      })
+    });
 
-    await browser.close();
+    if (!pdfResponse.ok) {
+      throw new Error('Failed to generate PDF');
+    }
+
+    const pdfBuffer = await pdfResponse.buffer();
 
     res.set({
       'Content-Type': 'application/pdf',
