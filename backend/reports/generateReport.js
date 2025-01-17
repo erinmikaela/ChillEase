@@ -3,6 +3,7 @@
 const express = require('express');
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
+const puppeteer = require('puppeteer'); // Add puppeteer
 
 const router = express.Router();
 
@@ -17,44 +18,50 @@ const db = new sqlite3.Database(dbPath, (err) => {
 });
 
 // Helper function to calculate date ranges
-function getDateRange(period) {
+function getDateRange(period, specificDate) {
   const today = new Date();
   let startDate, endDate;
 
-  switch (period) {
-    case 'today':
-      startDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-      endDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1);
-      break;
-    case 'weekly':
-      const firstDayOfWeek = new Date(today.setDate(today.getDate() - today.getDay()));
-      startDate = new Date(firstDayOfWeek.getFullYear(), firstDayOfWeek.getMonth(), firstDayOfWeek.getDate());
-      endDate = new Date(startDate);
-      endDate.setDate(startDate.getDate() + 7);
-      break;
-    case 'monthly':
-      startDate = new Date(today.getFullYear(), today.getMonth(), 1);
-      endDate = new Date(today.getFullYear(), today.getMonth() + 1, 1);
-      break;
-    case 'six-months':
-      startDate = new Date(today.getFullYear(), today.getMonth() - 5, 1);
-      endDate = new Date(today.getFullYear(), today.getMonth() + 1, 1);
-      break;
-    case 'annually':
-      startDate = new Date(today.getFullYear(), 0, 1);
-      endDate = new Date(today.getFullYear() + 1, 0, 1);
-      break;
-    case 'five-years':
-      startDate = new Date(today.getFullYear() - 4, 0, 1);
-      endDate = new Date(today.getFullYear() + 1, 0, 1);
-      break;
-    case 'ten-years':
-      startDate = new Date(today.getFullYear() - 9, 0, 1);
-      endDate = new Date(today.getFullYear() + 1, 0, 1);
-      break;
-    default:
-      startDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-      endDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1);
+  if (specificDate) {
+    startDate = new Date(specificDate);
+    endDate = new Date(specificDate);
+    endDate.setDate(endDate.getDate() + 1);
+  } else {
+    switch (period) {
+      case 'today':
+        startDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+        endDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1);
+        break;
+      case 'weekly':
+        const firstDayOfWeek = new Date(today.setDate(today.getDate() - today.getDay()));
+        startDate = new Date(firstDayOfWeek.getFullYear(), firstDayOfWeek.getMonth(), firstDayOfWeek.getDate());
+        endDate = new Date(startDate);
+        endDate.setDate(startDate.getDate() + 7);
+        break;
+      case 'monthly':
+        startDate = new Date(today.getFullYear(), today.getMonth(), 1);
+        endDate = new Date(today.getFullYear(), today.getMonth() + 1, 1);
+        break;
+      case 'six-months':
+        startDate = new Date(today.getFullYear(), today.getMonth() - 5, 1);
+        endDate = new Date(today.getFullYear(), today.getMonth() + 1, 1);
+        break;
+      case 'annually':
+        startDate = new Date(today.getFullYear(), 0, 1);
+        endDate = new Date(today.getFullYear() + 1, 0, 1);
+        break;
+      case 'five-years':
+        startDate = new Date(today.getFullYear() - 4, 0, 1);
+        endDate = new Date(today.getFullYear() + 1, 0, 1);
+        break;
+      case 'ten-years':
+        startDate = new Date(today.getFullYear() - 9, 0, 1);
+        endDate = new Date(today.getFullYear() + 1, 0, 1);
+        break;
+      default:
+        startDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+        endDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1);
+    }
   }
 
   return {
@@ -75,8 +82,8 @@ router.use(express.static(path.join(__dirname)));
 
 // 1. Service Utilization Report
 router.get('/api/service-utilization', (req, res) => {
-  const { period } = req.query;
-  const { startDate, endDate } = getDateRange(period);
+  const { period, date } = req.query;
+  const { startDate, endDate } = getDateRange(period, date);
 
   const query = `
     SELECT 
@@ -105,8 +112,8 @@ router.get('/api/service-utilization', (req, res) => {
 
 // 2. User Registration Report
 router.get('/api/user-registrations', (req, res) => {
-  const { period } = req.query;
-  const { startDate, endDate } = getDateRange(period);
+  const { period, date } = req.query;
+  const { startDate, endDate } = getDateRange(period, date);
 
   const query = `
     SELECT 
@@ -133,8 +140,8 @@ router.get('/api/user-registrations', (req, res) => {
 
 // 3. Daily Peak Time Report
 router.get('/api/daily-peak-times', (req, res) => {
-  const { period } = req.query;
-  const { startDate, endDate } = getDateRange(period);
+  const { period, date } = req.query;
+  const { startDate, endDate } = getDateRange(period, date);
 
   const query = `
     SELECT 
@@ -161,8 +168,8 @@ router.get('/api/daily-peak-times', (req, res) => {
 
 // 4. Transaction Status Distribution Report
 router.get('/api/transaction-status', (req, res) => {
-  const { period } = req.query;
-  const { startDate, endDate } = getDateRange(period);
+  const { period, date } = req.query;
+  const { startDate, endDate } = getDateRange(period, date);
 
   const query = `
     SELECT 
@@ -189,8 +196,8 @@ router.get('/api/transaction-status', (req, res) => {
 
 // 5. Service-Specific Usage Trends Report
 router.get('/api/service-usage-trends', (req, res) => {
-  const { period } = req.query;
-  const { startDate, endDate } = getDateRange(period);
+  const { period, date } = req.query;
+  const { startDate, endDate } = getDateRange(period, date);
 
   const query = `
     SELECT 
@@ -216,6 +223,31 @@ router.get('/api/service-usage-trends', (req, res) => {
     }
     res.json(rows);
   });
+});
+
+// New endpoint to generate PDF
+router.post('/api/generate-pdf', async (req, res) => {
+  const { htmlContent } = req.body;
+
+  try {
+    const browser = await puppeteer.launch();
+    const page = await browser.newPage();
+    await page.setContent(htmlContent, { waitUntil: 'networkidle0' });
+    const pdfBuffer = await page.pdf({ format: 'A4' });
+
+    await browser.close();
+
+    res.set({
+      'Content-Type': 'application/pdf',
+      'Content-Disposition': 'attachment; filename=report.pdf',
+      'Content-Length': pdfBuffer.length
+    });
+
+    res.send(pdfBuffer);
+  } catch (error) {
+    console.error('Error generating PDF:', error);
+    res.status(500).send('Error generating PDF');
+  }
 });
 
 module.exports = router;

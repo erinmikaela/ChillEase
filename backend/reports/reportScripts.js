@@ -7,15 +7,15 @@ let currentPeriod = '';
 
 async function generateReport() {
     const reportType = document.getElementById('reportType').value;
+    const specificDate = document.getElementById('calendarInput').value;
     const period = document.getElementById('period').value;
 
-    if (!reportType || !period) {
-        alert('Please select a report type and period.');
+    if (!reportType || (!specificDate && !period)) {
+        alert('Please select a report type and either a specific date or a period.');
         return;
     }
 
     currentReportType = reportType;
-    currentPeriod = period;
 
     let endpoint = '';
     switch(reportType) {
@@ -40,7 +40,8 @@ async function generateReport() {
     }
 
     try {
-        const response = await fetch(`${BASE_URL}/${endpoint}?period=${period}`);
+        const url = specificDate ? `${BASE_URL}/${endpoint}?date=${specificDate}` : `${BASE_URL}/${endpoint}?period=${period}`;
+        const response = await fetch(url);
         const data = await response.json();
 
         if (data.error) {
@@ -53,6 +54,30 @@ async function generateReport() {
     } catch (error) {
         console.error('Error generating report:', error);
         alert('An error occurred while generating the report.');
+    }
+}
+
+async function generatePDF() {
+    const reportContent = document.getElementById('reportContent').innerHTML;
+    const response = await fetch('/reports/api/generate-pdf', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ htmlContent: reportContent })
+    });
+
+    if (response.ok) {
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'report.pdf';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+    } else {
+        alert('Failed to generate PDF');
     }
 }
 

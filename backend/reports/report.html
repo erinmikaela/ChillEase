@@ -31,7 +31,7 @@
     <div class="container my-4">
         <h1 class="text-center mb-4">QueueEase Reports</h1>
         <form id="reportForm" class="row g-3">
-            <div class="col-md-6">
+            <div class="col-md-6 form-group">
                 <label for="reportType" class="form-label">Report Type:</label>
                 <select id="reportType" name="reportType" class="form-select" required>
                     <option value="">--Select Report--</option>
@@ -43,7 +43,12 @@
                 </select>
             </div>
 
-            <div class="col-md-6">
+            <div class="col-md-6 form-group">
+                <label for="calendarInput" class="form-label">Select Specific Date:</label>
+                <input type="date" id="calendarInput" class="form-control">
+            </div>
+
+            <div class="col-md-6 form-group">
                 <label for="period" class="form-label">Period:</label>
                 <select id="period" name="period" class="form-select" required>
                     <option value="">--Select Period--</option>
@@ -67,7 +72,9 @@
             <div class="chart-container">
                 <canvas id="reportChart"></canvas>
             </div>
-            <!-- Download PDF Button Removed as per request -->
+            <div class="text-center mt-4">
+                <button type="button" class="btn btn-secondary" onclick="generatePDF()">Download PDF</button>
+            </div>
         </div>
     </div>
 
