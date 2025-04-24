@@ -1,3 +1,4 @@
+<!-- support.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,8 +18,7 @@
 <body>
   <nav class="navbar">
     <a href="user-dashboard.html" class="back-link">
-      <i class="fas fa-arrow-left"></i>
-       Go Back to Dashboard
+      <i class="fas fa-arrow-left"></i>&nbsp;Go Back to Dashboard
     </a>
     <div class="navbar-brand queueease">
       <img src="logo-q.png" alt="QueueEase Logo" class="navbar-logo" />
@@ -29,36 +29,36 @@
   <main>
     <!-- Announcements -->
     <section class="section announcements">
-      <h2><i class="fas fa-bullhorn"></i> Announcements</h2>
+      <h2><i class="fas fa-bullhorn"></i>&nbsp;Announcements</h2>
       <div class="announcement-list"><!-- injected by JS --></div>
     </section>
 
     <!-- Frequently Asked Questions -->
     <section class="section faqs">
-      <h2><i class="fas fa-question-circle"></i> Frequently Asked Questions</h2>
+      <h2><i class="fas fa-question-circle"></i>&nbsp;Frequently Asked Questions</h2>
       <div class="faq-container"><!-- injected by JS --></div>
     </section>
   </main>
 
-  <!-- Live-chat trigger & window (unchanged) -->
-  <div id="live-chat" class="chat-icon" title="Contact Live Agent Now">
-    <i class="fas fa-headset"></i>
-    <span class="chat-label">Contact Live Agent Now</span>
+  <!-- Live-chat trigger -->
+  <div id="live-chat" class="chat-icon" title="Contact Live Chatbot Now">
+    <i class="fas fa-robot"></i><span class="chat-label">Chat</span>
   </div>
+
+  <!-- Chat Window -->
   <div id="chat-container" class="chat-container hidden">
     <div class="chat-header">
-      <i class="fas fa-headset"></i>
-      <span>Support Chat</span>
-      <i id="chat-close" class="fas fa-times chat-close"></i>
-    </div>
-    <div id="chat-body" class="chat-body">
-      <div class="message agent">
-        <i class="fas fa-robot"></i> Hello, how can I assist you today?
+      <i class="fas fa-robot"></i><span>QueueEase Bot</span>
+      <div class="header-actions">
+        <i id="chat-clear" class="fas fa-trash-alt clear-btn" title="Clear Chat"></i>
+        <i id="chat-close" class="fas fa-times chat-close" title="Close Chat"></i>
       </div>
     </div>
-    <div class="chat-input">
-      <input id="chat-input-field" type="text" placeholder="Type your message" />
-      <button id="chat-send"><i class="fas fa-paper-plane"></i></button>
+    <div id="chat-body" class="chat-body">
+      <div class="message agent greeting">
+        <i class="fas fa-robot"></i>&nbsp;&nbsp;Hello! I’m QueueEase Bot. Choose an option:<span class="timestamp">— now</span>
+      </div>
+      <!-- options bubble will be injected here -->
     </div>
   </div>
 
