@@ -5,7 +5,9 @@ html, body {
 }
 
 body {
-    overflow: hidden;
+    /* Allow vertical scrolling only, hide horizontal overflow */
+    overflow-x: hidden;
+    overflow-y: auto;
     background: linear-gradient(45deg, #FBFADA, #9c9f7a, #d4c082, #436850);
     background-size: 300% 300%;
     animation: backgroundShift 10s linear infinite;
@@ -25,21 +27,16 @@ body {
     }
 }
 
-/* Body Padding Adjustment */
-body {
-    padding-bottom: 60px; /* This can be adjusted or removed */
-}
-
 /* Navbar Styles */
 .navbar {
-    background: linear-gradient(90deg, #12372A, #1A5E3A,#416c55,#709682);
+    background: linear-gradient(90deg, #12372A, #1A5E3A, #416c55, #709682);
     padding: 10px 20px; /* Adjust padding for mobile */
 }
 
 .navbar a {
     color: #FBFADA; /* Light yellow text */
     text-decoration: none;
-    font-size: 1rem; /* Adjust font size for better readability */
+    font-size: 1rem;
 }
 
 .navbar a:hover {
@@ -47,26 +44,14 @@ body {
 }
 
 .navbar-logo {
-    height: 40px; /* Adjust as needed */
-    width: auto; /* Maintain aspect ratio */
-  }
-  
-  .navbar-brand {
-    font-size: 2.25rem; /* Adjust font size if necessary */
-  }
-  
-  .logout-btn {
-    color: #fff;
-    font-size: 1.2rem;
-    text-decoration: none;
-  }
-  
-  .navbar-dark .navbar-toggler {
-    border-color: rgba(255, 255, 255, 0.1);
-  }
-  
+    height: 40px;
+    width: auto;
+}
 
-/* Styling the Logout Button */
+.navbar-brand {
+    font-size: 2.25rem;
+}
+
 .logout-btn {
     background-color: #F9C0AB;
     color: white;
@@ -95,54 +80,53 @@ body {
 /* Icon Container */
 .icon-container {
     margin-top: 90px;
-    justify-content: center; /* Center the containers horizontally */
+    justify-content: center; /* Center horizontally */
 }
 
 .icon-box {
     display: flex;
     flex-direction: column;
-    justify-content: center; /* Vertically center content */
+    justify-content: center; /* Vertically center */
     align-items: center;
-    background-color: #ffffff; /* Light blue background */
-    border-radius: 10px; /* Rounded corners */
-    padding: 0px; /* Increased padding for larger containers */
-    width: 250px; /* Increased width */
-    height: 250px; /* Set a fixed height for uniformity */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Slight shadow for a card-like effect */
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 0;
+    width: 250px;
+    height: 250px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     text-decoration: none;
-    color: #12372A; /* Dark green */
+    color: #12372A;
     transition: transform 0.3s ease, background-color 0.3s ease;
     margin-left: 70px;
-    margin-bottom: 90px; 
+    margin-bottom: 90px;
 }
 
 .icon-box:last-child {
-    margin-right: 0; /* Remove the margin on the last container */
+    margin-right: 0;
 }
 
 .icon-box i {
-    margin-bottom: 15px; /* Increased margin for spacing */
+    margin-bottom: 15px;
     color: #12372A;
-    font-size: 60px; /* Larger icons */
+    font-size: 60px;
 }
 
 .icon-box p {
-    font-size: 24px; /* Larger font for the labels */
+    font-size: 24px;
     font-weight: 600;
     color: #12372A;
     margin: 0;
 }
 
 .icon-box:hover {
-    background-color: #FBFADA; 
+    background-color: #FBFADA;
     transform: scale(1.05);
 }
-
 
 /* Footer Styling */
 footer {
     background: linear-gradient(45deg, #709682, #416c55, #1A5E3A, #12372A);
-    color: #FBFADA; /* Light yellow text */
+    color: #FBFADA;
     text-align: center;
     padding: 15px;
     position: fixed;
@@ -152,22 +136,21 @@ footer {
     font-size: 14px;
 }
 
-body {
-    overflow-x: hidden; /* Prevent horizontal scroll */
-}
-
 footer a {
-    color: #ADBC9F; /* Light green */
+    color: #ADBC9F;
     text-decoration: none;
 }
 
 footer a:hover {
-    color: #FBFADA; /* Light yellow on hover */
+    color: #FBFADA;
 }
 
-/* Media Queries for Mobile Responsiveness */
+/* Responsive: Mobile First */
 @media (max-width: 768px) {
-    /* Navbar Adjustments for Small Screens */
+    body {
+      overflow-y: auto;
+    }
+
     .navbar {
         padding: 10px;
         text-align: center;
@@ -175,93 +158,70 @@ footer a:hover {
 
     .navbar a {
         display: block;
-        margin: 5px 0; /* Adjust margin for smaller screens */
-        font-size: 14px; /* Smaller font size */
+        margin: 5px 0;
+        font-size: 14px;
     }
 
-    /* Adjusting Logout Button for Mobile */
     .logout-btn {
-        width: 100%; /* Make the button full width */
-        padding: 12px 20px; /* Increase padding for mobile */
-        margin-top: 15px; /* Add margin for spacing */
+        width: 100%;
+        padding: 12px 20px;
+        margin-top: 15px;
     }
 
-    /* Center Content Adjustments */
     .icon-container {
-        margin-top: 50px; /* Reduced margin for mobile */
+        margin-top: 50px;
     }
 
     .icon-box {
-        margin-bottom: 20px; /* Adjust spacing */
+        margin-bottom: 20px;
         padding: 15px;
     }
 
     .icon-box p {
-        font-size: 16px; /* Smaller font size */
+        font-size: 16px;
     }
 
-    /* Footer Styling for Small Screens */
     footer {
-        font-size: 12px; /* Reduce font size */
+        font-size: 12px;
         padding: 10px;
+    }
+
+    /* Welcome message adjustments */
+    .welcome-message h3 {
+        font-size: 30px;
+    }
+    .welcome-message p {
+        font-size: 16px;
+    }
+
+    .icon-container .icon-box i {
+        font-size: 2rem;
+    }
+
+    .icon-container .icon-box p {
+        font-size: 14px;
     }
 }
 
-/* For Small Mobile Screens (max-width: 480px) */
 @media (max-width: 480px) {
     .navbar {
-        padding: 8px 10px; /* Adjust padding */
+        padding: 8px 10px;
     }
 
     .navbar a {
-        font-size: 12px; /* Further reduce font size */
-        margin: 5px 0; /* Adjust margin */
+        font-size: 12px;
+        margin: 5px 0;
     }
 
     .icon-container {
-        margin-top: 30px; /* Further reduce margin for small screens */
+        margin-top: 30px;
     }
 
     .icon-box p {
-        font-size: 14px; /* Even smaller font size */
+        font-size: 14px;
     }
 
     footer {
-        font-size: 10px; /* Very small font for footer */
+        font-size: 10px;
     }
 }
-
-@media (max-width: 768px) {
-    /* Make the content scrollable */
-    body {
-      overflow-y: auto;
-    }
-  
-    .container {
-      padding: 20px;
-      max-width: 100%;
-    }
-  
-    .welcome-message h3 {
-      font-size: 30px;
-    }
-  
-    .welcome-message p {
-      font-size: 16px;
-    }
-  
-    .icon-container .icon-box i {
-      font-size: 2rem;
-    }
-  
-    .icon-container .icon-box p {
-      font-size: 14px;
-    }
-  
-    .footer {
-      font-size: 12px;
-      text-align: center;
-      padding: 10px;
-    }
-  }
-  

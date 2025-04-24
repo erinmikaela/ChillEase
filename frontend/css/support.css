@@ -1,3 +1,5 @@
+/* frontend/css/support.css */
+
 /* Import Poppins */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
 
@@ -11,7 +13,9 @@
   --faq-bg: #f7f9fa;
 }
 
-* { box-sizing: border-box; }
+* {
+  box-sizing: border-box;
+}
 
 body {
   background: var(--bg);
@@ -37,6 +41,7 @@ body {
   padding: 0 20px;
   z-index: 1000;
 }
+
 .back-link {
   color: var(--bg);
   display: flex;
@@ -47,14 +52,23 @@ body {
   padding: 8px 15px;
   transition: color .3s, transform .3s;
 }
-.back-link:hover { color: var(--accent); transform: scale(1.05); }
+
+.back-link:hover {
+  color: var(--accent);
+  transform: scale(1.05);
+}
+
 .navbar-brand {
   display: flex;
   align-items: center;
-  color: #FBFADA;
+  color: var(--bg);
   font-size: 1.25rem;
 }
-.navbar-logo { height: 36px; margin-right: 8px; }
+
+.navbar-logo {
+  height: 36px;
+  margin-right: 8px;
+}
 
 /* Main */
 main {
@@ -63,6 +77,7 @@ main {
   max-width: 900px;
   margin: 20px auto;
 }
+
 .section h2 {
   display: flex;
   align-items: center;
@@ -77,6 +92,7 @@ main {
   display: grid;
   gap: 12px;
 }
+
 .announcement-item {
   display: flex;
   align-items: center;
@@ -88,7 +104,11 @@ main {
   font-weight: 600;
   border-radius: 4px;
 }
-.announcement-item i { color: var(--primary); font-size: 1.2rem; }
+
+.announcement-item i {
+  color: var(--primary);
+  font-size: 1.2rem;
+}
 
 /* FAQs */
 .faq-container {
@@ -96,6 +116,7 @@ main {
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 16px;
 }
+
 .faq-card {
   display: flex;
   gap: 12px;
@@ -104,15 +125,18 @@ main {
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   padding: 12px;
 }
+
 .faq-card .icon {
   color: var(--primary);
   font-size: 1.5rem;
 }
+
 .faq-content h4 {
   margin: 0 0 4px;
   color: var(--text-dark);
   font-size: 1rem;
 }
+
 .faq-content blockquote {
   margin: 0;
   padding-left: 1rem;
@@ -138,11 +162,21 @@ main {
   transition: background .3s, transform .3s;
   font-size: 1rem;
 }
-.chat-icon i { font-size: 1.4rem; }
-.chat-icon:hover { background: var(--primary); transform: scale(1.05); }
+
+.chat-icon i {
+  font-size: 1.4rem;
+}
+
+.chat-icon:hover {
+  background: var(--primary);
+  transform: scale(1.05);
+}
 
 /* Chat Window */
-.chat-container.hidden { display: none; }
+.chat-container.hidden {
+  display: none;
+}
+
 .chat-container {
   position: fixed;
   bottom: 90px;
@@ -155,6 +189,7 @@ main {
   display: flex;
   flex-direction: column;
 }
+
 .chat-header {
   display: flex;
   align-items: center;
@@ -164,7 +199,11 @@ main {
   padding: 10px;
   gap: 8px;
 }
-.chat-close { cursor: pointer; }
+
+.chat-close {
+  cursor: pointer;
+}
+
 .chat-body {
   flex: 1;
   overflow-y: auto;
@@ -182,11 +221,13 @@ main {
   border-radius: 20px;
   max-width: 80%;
 }
+
 .message.agent {
   background: #ececec;
   color: var(--text-dark);
   border-top-left-radius: 0;
 }
+
 .message.user {
   background: var(--accent);
   color: #fff;
@@ -200,6 +241,7 @@ main {
   gap: 4px;
   margin-bottom: 8px;
 }
+
 .typing span {
   width: 6px;
   height: 6px;
@@ -207,6 +249,7 @@ main {
   border-radius: 50%;
   animation: blink 1s infinite ease-in-out;
 }
+
 @keyframes blink {
   0%, 80%, 100% { opacity: 0; }
   40% { opacity: 1; }
@@ -218,6 +261,7 @@ main {
   border-top: 1px solid #ddd;
   padding: 8px;
 }
+
 .chat-input input {
   flex: 1;
   border: none;
@@ -226,6 +270,7 @@ main {
   margin-right: 8px;
   background: #f0f0f0;
 }
+
 .chat-input button {
   background: var(--accent);
   border: none;
@@ -240,14 +285,31 @@ main {
   align-items: center;
   justify-content: center;
 }
+
 .chat-input button i {
   font-size: 18px;
 }
 
 /* Responsive */
 @media (max-width: 600px) {
-  main { margin: 80px 10px 10px; }
-  .announcement-list, .faq-container { gap: 8px; }
-  .chat-icon { padding: 10px; font-size: 0.9rem; bottom: 10px; right: 10px; }
-  .chat-container { width: 90%; right: 5%; }
+  main {
+    margin: 80px 10px 10px;
+  }
+
+  .announcement-list,
+  .faq-container {
+    gap: 8px;
+  }
+
+  .chat-icon {
+    padding: 10px;
+    font-size: 0.9rem;
+    bottom: 10px;
+    right: 10px;
+  }
+
+  .chat-container {
+    width: 90%;
+    right: 5%;
+  }
 }

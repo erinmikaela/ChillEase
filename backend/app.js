@@ -1,4 +1,5 @@
 // backend/app.js
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
@@ -35,13 +36,15 @@ app.use(
   })
 );
 
+// Mount support center routes before static files
+app.use('/reports', reportRoutes);
+app.use('/api/support', require('./routes/supportCenterRoutes'));
+app.use('/api/admin/support', require('./routes/supportCenterRoutes'));
+
 // Serve static frontend files
 app.use(express.static(path.join(__dirname, '../frontend')));
 
-// Use the reports router under '/reports'
-app.use('/reports', reportRoutes);
-
-// Import routes
+// Import other routes
 const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoutes');
 const adminRoutes = require('./routes/adminRoutes');

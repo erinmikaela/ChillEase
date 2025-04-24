@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>QueueEase Support Admin</title>
+
+  <!-- FontAwesome Icons -->
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css"
+  />
+
+  <!-- Shared Styles -->
+  <link rel="stylesheet" href="css/support.css" />
+  <!-- Admin Overrides -->
+  <link rel="stylesheet" href="css/admin-support.css" />
+</head>
+<body>
+  <nav class="navbar">
+    <a href="admin-dashboard.html" class="back-link">
+      <i class="fas fa-arrow-left"></i>
+      Go Back to Dashboard
+    </a>
+    <div class="navbar-brand queueease">
+      <img src="logo-q.png" alt="QueueEase Logo" class="navbar-logo" />
+      <span>QueueEase</span>
+    </div>
+  </nav>
+
+  <main>
+    <!-- Announcements Admin -->
+    <section class="section announcements">
+      <h2><i class="fas fa-bullhorn"></i> Manage Announcements</h2>
+      <form id="add-ann-form" class="admin-form">
+        <input type="text" id="add-ann-text" placeholder="New announcement text" required />
+        <button type="submit"><i class="fas fa-plus-circle"></i> Add Announcement</button>
+      </form>
+      <div id="announcement-list" class="announcement-list">
+        Loading announcements…
+      </div>
+    </section>
+
+    <!-- FAQs Admin -->
+    <section class="section faqs">
+      <h2><i class="fas fa-question-circle"></i> Manage FAQs</h2>
+      <form id="add-faq-form" class="admin-form">
+        <input type="text" id="add-faq-q" placeholder="Question" required />
+        <input type="text" id="add-faq-a" placeholder="Answer" required />
+        <button type="submit"><i class="fas fa-plus-circle"></i> Add FAQ</button>
+      </form>
+      <div id="faq-container" class="faq-container">
+        Loading FAQs…
+      </div>
+    </section>
+  </main>
+
+  <script src="js/admin-support.js"></script>
+</body>
+</html>

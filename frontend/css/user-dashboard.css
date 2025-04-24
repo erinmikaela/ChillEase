@@ -1,6 +1,7 @@
 /* General Body Styles */
 body {
   overflow: hidden;
+  overflow-y: auto;
   background: linear-gradient(45deg, #9c9f7a, #d4c082, #436850, #12372A);
   background-size: 300% 300%;
   animation: backgroundShift 10s linear infinite;

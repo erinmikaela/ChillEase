@@ -1,0 +1,56 @@
+/* Admin Overrides */
+
+.admin-form {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+  
+  .admin-form input {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .admin-form button {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .admin-form button:hover {
+    background: var(--primary);
+  }
+  
+  /* Edit/Delete controls */
+  .admin-controls {
+    margin-left: auto;
+    display: flex;
+    gap: 8px;
+  }
+  
+  .admin-controls i {
+    cursor: pointer;
+    color: var(--text-dark);
+    transition: color .2s, transform .2s;
+  }
+  .admin-controls i:hover {
+    color: var(--accent);
+    transform: scale(1.2);
+  }
+  
+  /* In-place edit input */
+  .edit-input {
+    flex: 1;
+    padding: 4px 8px;
+    margin-right: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
