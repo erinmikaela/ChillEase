@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>QueueEase Support Center</title>
+
+  <!-- FontAwesome Free via jsDelivr -->
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css"
+  />
+
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="css/support.css" />
+</head>
+<body>
+  <nav class="navbar">
+    <a href="user-dashboard.html" class="back-link">
+      <i class="fas fa-arrow-left"></i>
+      Go Back to Dashboard
+    </a>
+    <div class="navbar-brand queueease">
+      <img src="logo-q.png" alt="QueueEase Logo" class="navbar-logo" />
+      <span>QueueEase</span>
+    </div>
+  </nav>
+
+  <main>
+    <!-- Announcements -->
+    <section class="section announcements">
+      <h2><i class="fas fa-bullhorn"></i> Announcements</h2>
+      <div class="announcement-list">
+        <div class="announcement-item">
+          <i class="fas fa-network-wired"></i>
+          QueueEase now sends your token directly to PhilHealth branch servers via our API integration.
+        </div>
+        <div class="announcement-item">
+          <i class="fas fa-check-circle"></i>
+          Your PhilHealth identifier is validated in real time before you join the queue.
+        </div>
+        <div class="announcement-item">
+          <i class="fas fa-clock"></i>
+          QueueEase displays estimated wait times for PhilHealth service windows instantly.
+        </div>
+        <div class="announcement-item">
+          <i class="fas fa-exchange-alt"></i>
+          You can switch between services and view your PhilHealth queue status in the app.
+        </div>
+        <div class="announcement-item">
+          <i class="fas fa-clipboard-list"></i>
+          PhilHealth attendance logs update automatically when you are served.
+        </div>
+      </div>
+    </section>
+
+    <!-- Frequently Asked Questions -->
+    <section class="section faqs">
+      <h2><i class="fas fa-question-circle"></i> Frequently Asked Questions</h2>
+      <div class="faq-container">
+        <div class="faq-card">
+          <i class="fas fa-id-badge icon"></i>
+          <div class="faq-content">
+            <h4>How do I link my PhilHealth ID?</h4>
+            <blockquote>Open your account settings in QueueEase and enter your PhilHealth number there.</blockquote>
+          </div>
+        </div>
+        <div class="faq-card">
+          <i class="fas fa-user-check icon"></i>
+          <div class="faq-content">
+            <h4>What happens after I join a PhilHealth queue?</h4>
+            <blockquote>You receive a confirmation message and your queue number appears in the app.</blockquote>
+          </div>
+        </div>
+        <div class="faq-card">
+          <i class="fas fa-user-edit icon"></i>
+          <div class="faq-content">
+            <h4>Can I update my PhilHealth details later?</h4>
+            <blockquote>Yes just go to your profile in QueueEase and update your PhilHealth information.</blockquote>
+          </div>
+        </div>
+        <div class="faq-card">
+          <i class="fas fa-times-circle icon"></i>
+          <div class="faq-content">
+            <h4>How do I cancel my PhilHealth queue spot?</h4>
+            <blockquote>Open the queue section and tap cancel to remove your number from the list.</blockquote>
+          </div>
+        </div>
+        <div class="faq-card">
+          <i class="fas fa-building icon"></i>
+          <div class="faq-content">
+            <h4>Does QueueEase work with all PhilHealth branches?</h4>
+            <blockquote>QueueEase supports every branch that uses the standard PhilHealth queue API.</blockquote>
+          </div>
+        </div>
+        <div class="faq-card">
+          <i class="fas fa-bell icon"></i>
+          <div class="faq-content">
+            <h4>Will I get a notification when it is my turn?</h4>
+            <blockquote>Yes QueueEase will notify you in the app when PhilHealth is ready to serve you.</blockquote>
+          </div>
+        </div>
+        <div class="faq-card">
+          <i class="fas fa-exchange-alt icon"></i>
+          <div class="faq-content">
+            <h4>Can I join another service while waiting?</h4>
+            <blockquote>Yes you can switch services and rejoin any additional PhilHealth queue.</blockquote>
+          </div>
+        </div>
+        <div class="faq-card">
+          <i class="fas fa-chart-line icon"></i>
+          <div class="faq-content">
+            <h4>How is my wait time estimated?</h4>
+            <blockquote>QueueEase uses live data from PhilHealth to calculate your estimated wait time.</blockquote>
+          </div>
+        </div>
+        <div class="faq-card">
+          <i class="fas fa-dollar-sign icon"></i>
+          <div class="faq-content">
+            <h4>Is there any cost for PhilHealth queueing?</h4>
+            <blockquote>QueueEase is completely free for managing your PhilHealth queues.</blockquote>
+          </div>
+        </div>
+        <div class="faq-card">
+          <i class="fas fa-headset icon"></i>
+          <div class="faq-content">
+            <h4>Who can I contact for queue support?</h4>
+            <blockquote>Tap the live chat icon to connect with our support team at any time.</blockquote>
+          </div>
+        </div>
+        <div class="faq-card">
+          <i class="fas fa-info-circle icon"></i>
+          <div class="faq-content">
+            <h4>What information do I need to provide?</h4>
+            <blockquote>You only need your PhilHealth number and your full name to join the queue.</blockquote>
+          </div>
+        </div>
+        <div class="faq-card">
+          <i class="fas fa-archive icon"></i>
+          <div class="faq-content">
+            <h4>Can I access my queue history?</h4>
+            <blockquote>Yes open the history tab in QueueEase to review your past queue records at PhilHealth.</blockquote>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Live Agent Chat Trigger -->
+  <div id="live-chat" class="chat-icon" title="Contact Live Agent Now">
+    <i class="fas fa-headset"></i>
+    <span class="chat-label">Contact Live Agent Now</span>
+  </div>
+
+  <!-- Chat Window -->
+  <div id="chat-container" class="chat-container hidden">
+    <div class="chat-header">
+      <i class="fas fa-headset"></i>
+      <span>Support Chat</span>
+      <i id="chat-close" class="fas fa-times chat-close"></i>
+    </div>
+    <div id="chat-body" class="chat-body">
+      <div class="message agent">
+        <i class="fas fa-robot"></i> Hello how can I assist you today
+      </div>
+    </div>
+    <div class="chat-input">
+      <input id="chat-input-field" type="text" placeholder="Type your message" />
+      <button id="chat-send">
+        <i class="fas fa-paper-plane"></i>
+      </button>
+    </div>
+  </div>
+
+  <script src="js/support.js"></script>
+</body>
+</html>
