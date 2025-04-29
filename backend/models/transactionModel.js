@@ -140,6 +140,49 @@ const TransactionModel = {
     `;
     db.get(query, [user_id], callback);
   },
+
+  // Calculate estimated waiting time for a user
+  calculateEstimatedTime: (user_id, callback) => {
+    console.log(`Calculating estimated time for user ID: ${user_id}`); // Debugging log
+
+    const query = `
+        SELECT t.queue_number, 
+               (SELECT AVG(average_service_time) FROM services WHERE service_id = t.service_id) AS avg_service_time
+        FROM transactions t
+        WHERE t.user_id = ? AND t.status = 'waiting'
+    `;
+    db.get(query, [user_id], (err, row) => {
+        if (err) {
+            console.error('Error fetching user transaction:', err.message); // Debugging log
+            return callback(err);
+        }
+
+        if (!row) {
+            console.log('No waiting transaction found for user.'); // Debugging log
+            return callback(null, { estimated_time: 0 });
+        }
+
+        const { queue_number, avg_service_time } = row;
+        console.log(`User queue number: ${queue_number}, Average service time: ${avg_service_time}`); // Debugging log
+
+        const waitingQuery = `
+            SELECT COUNT(*) AS users_ahead
+            FROM transactions
+            WHERE status = 'waiting' AND queue_number < ?
+        `;
+        db.get(waitingQuery, [queue_number], (err, result) => {
+            if (err) {
+                console.error('Error fetching users ahead in queue:', err.message); // Debugging log
+                return callback(err);
+            }
+
+            const usersAhead = result.users_ahead || 0;
+            const estimatedTime = usersAhead * (avg_service_time || 5); // Default avg time: 5 mins
+            console.log(`Users ahead: ${usersAhead}, Estimated waiting time: ${estimatedTime} minutes`); // Debugging log
+            callback(null, { estimated_time: estimatedTime });
+        });
+    });
+  },
 };
 
 // Helper function to notify a user

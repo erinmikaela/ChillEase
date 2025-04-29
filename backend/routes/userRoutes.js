@@ -2,6 +2,7 @@
 const express = require('express');
 const { Database } = require('sqlite3').verbose();
 const router = express.Router();
+const { getEstimatedWaitingTime } = require('../controllers/userController');
 
 // Database connection
 const db = new Database('./database/queueease.db');
@@ -260,5 +261,8 @@ router.get('/notifications/:userId', (req, res) => {
       res.json(rows);
     });
 });
+
+// Route to fetch estimated waiting time
+router.get('/estimated-waiting-time/:userId', getEstimatedWaitingTime);
 
 module.exports = router;

@@ -1,6 +1,7 @@
 const db = require('../models/database').db; // Ensure correct database reference
 const NotificationModel = require('../models/notificationModel'); // Import notification model
 const { io } = require('../socket'); // Import WebSocket instance
+const TransactionModel = require('../models/transactionModel'); // Import TransactionModel
 
 // Login User
 exports.loginUser = (req, res) => {
@@ -183,3 +184,16 @@ function sendNotificationAndEmit(userId, message) {
   });
   io.to(userId.toString()).emit('queueUpdate', { message });
 }
+
+// Get Estimated Waiting Time
+exports.getEstimatedWaitingTime = (req, res) => {
+  const { userId } = req.params;
+
+  TransactionModel.calculateEstimatedTime(userId, (err, result) => {
+    if (err) {
+      console.error('Error calculating estimated waiting time:', err.message);
+      return res.status(500).json({ message: 'Failed to calculate estimated waiting time.' });
+    }
+    res.status(200).json(result);
+  });
+};
