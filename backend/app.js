@@ -18,6 +18,9 @@ const {
 // Import the reports router
 const reportRoutes = require('./reports/generateReport');
 
+
+
+
 dotenv.config();
 
 const app = express();
@@ -35,6 +38,15 @@ app.use(
     cookie: { secure: false }, // Set `secure: true` for HTTPS
   })
 );
+
+
+// Import the reports issue router
+const reportIssueRoutes = require('./routes/reportRoutes');
+app.use('/api/reports', reportIssueRoutes);        // New reporting system for QueueEase
+console.log("✅ Report routes loaded at /api/reports");
+
+
+
 
 // Mount support center routes before static files
 app.use('/reports', reportRoutes);

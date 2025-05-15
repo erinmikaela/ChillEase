@@ -1,0 +1,177 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+:root {
+  --bg: #FBFADA;
+  --primary: #12372A;
+  --secondary: #1A5E3A;
+  --accent: #436850;
+  --text-dark: #12372A;
+  --header-gradient: linear-gradient(135deg, var(--secondary), var(--primary));
+}
+
+/* BODY */
+body {
+  background: var(--bg);
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  padding-top: 60px;
+}
+
+/* NAVBAR */
+.navbar {
+  background: var(--header-gradient);
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px 0 30px;
+  z-index: 1000;
+}
+
+.nav-container {
+  width: 95%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: 10px;
+  color: var(--bg);
+  font-size: 1rem;
+  text-decoration: none;
+  transition: color 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.back-link:hover {
+  color: var(--accent);
+  transform: scale(1.05);
+}
+
+.navbar-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--bg);
+}
+
+.navbar-logo {
+  height: 32px;
+  width: auto;
+}
+
+/* MAIN SECTION */
+.admin-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 30px 20px;
+}
+
+.report-section h2 {
+  font-size: 1.6rem;
+  color: var(--text-dark);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+/* TABLE STYLING */
+.report-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+  font-size: 0.95rem;
+}
+
+.report-table thead {
+  background: var(--accent);
+  color: white;
+}
+
+.report-table th,
+.report-table td {
+  padding: 12px 14px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+  vertical-align: top;
+}
+
+.report-table tr:hover {
+  background: #f4fdf4;
+}
+
+.report-table td img {
+  max-height: 40px;
+  border-radius: 4px;
+}
+
+.report-table td .btn {
+  padding: 6px 10px;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  background: var(--secondary);
+  color: white;
+}
+
+.report-table td .btn:hover {
+  background: var(--primary);
+}
+
+/* TEXT WRAPPING */
+.report-table td:nth-child(6),
+.report-table td:nth-child(7),
+.wrap-text {
+  max-width: 250px;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+}
+
+/* ACK BUTTON STYLES */
+.ack-btn {
+  padding: 6px 12px;
+  border: none;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.ack-btn.red {
+  background-color: #c0392b;
+}
+
+.ack-btn.green {
+  background-color: #27ae60;
+}
+
+/* HIGHLIGHTED ROW EFFECT */
+.highlight {
+  background-color: #d4edda;
+  transition: opacity 1s ease-in-out;
+}
+
+.fade-out {
+  opacity: 0;
+}
+
+/* FOR HEADERS WITH ICONS */
+th .th-flex {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  justify-content: flex-start;
+  white-space: nowrap;
+}

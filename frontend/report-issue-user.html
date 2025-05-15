@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QueueEase | Report Issue</title>
+
+  <!-- FontAwesome -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" />
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="css/report-issue-user.css" />
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="user-dashboard.html" class="back-link">
+        <i class="fas fa-arrow-left"></i>
+        Go Back to Dashboard
+      </a>
+      <div class="navbar-brand queueease">
+        <img src="logo-q.png" alt="QueueEase Logo" class="navbar-logo" />
+        <span>QueueEase</span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- INTRO SECTION -->
+  <section class="intro-section">
+    <h2 class="intro-header">
+      <i class="fas fa-exclamation-circle"></i>
+      <span>Report an Issue</span>
+    </h2>
+    <div class="intro-box">
+      <p class="intro-text">
+        We’re sorry you’ve run into a problem! Your feedback helps us fix issues
+        faster and build a better experience for everyone. We’ll review your
+        report within 24 hours.
+      </p>
+    </div>
+  </section>
+
+  <!-- FORM -->
+  <div class="form-container">
+    <form id="reportForm" class="report-form">
+
+      <!-- ISSUE DETAILS -->
+      <section class="section-box">
+        <h3><i class="fas fa-bug"></i> Issue Details</h3>
+
+        <!-- Custom Category Dropdown -->
+        <div class="form-group custom-dropdown" id="categoryDropdown">
+          <label for="category">Category of Issue</label>
+          <div class="dropdown-selected" id="selectedCategory">
+            <span>Select one...</span><i class="fas fa-angle-down"></i>
+          </div>
+          <ul class="dropdown-options" id="dropdownOptions">
+            <li data-value="Join Queue"><i class="fas fa-users"></i> Join Queue</li>
+            <li data-value="PhilHealth Help"><i class="fas fa-hand-holding-medical"></i> PhilHealth Help</li>
+            <li data-value="Work Hours"><i class="fas fa-clock"></i> Work Hours</li>
+            <li data-value="Contact Us"><i class="fas fa-envelope"></i> Contact Us</li>
+            <li data-value="Update Profile"><i class="fas fa-user-edit"></i> Update Profile</li>
+            <li data-value="Book Slot"><i class="fas fa-calendar-check"></i> Book Slot</li>
+            <li data-value="Notify Me"><i class="fas fa-bell"></i> Notify Me</li>
+            <li data-value="Stock Status"><i class="fas fa-boxes"></i> Stock Status</li>
+            <li data-value="View FAQs"><i class="fas fa-question-circle"></i> View FAQs</li>
+            <li data-value="View News"><i class="fas fa-newspaper"></i> View News</li>
+            <li data-value="Login Help"><i class="fas fa-sign-in-alt"></i> Login Help</li>
+            <li data-value="Sign Up"><i class="fas fa-user-plus"></i> Sign Up</li>
+            <li data-value="Reset Pass"><i class="fas fa-key"></i> Reset Pass</li>
+            <li data-value="Urgent Care"><i class="fas fa-ambulance"></i> Urgent Care</li>
+            <li data-value="API Docs"><i class="fas fa-code"></i> API Docs</li>
+            <li data-value="Data Safety"><i class="fas fa-lock"></i> Data Safety</li>
+            <li data-value="Billing FAQ"><i class="fas fa-file-invoice-dollar"></i> Billing FAQ</li>
+            <li data-value="Send Feedback"><i class="fas fa-comment-dots"></i> Send Feedback</li>
+            <li data-value="System Status"><i class="fas fa-server"></i> System Status</li>
+            <li data-value="Support Hours"><i class="fas fa-headset"></i> Support Hours</li>
+            <li data-value="Other Query"><i class="fas fa-ellipsis-h"></i> Other Query</li>
+          </ul>
+          <input type="hidden" name="category" id="categoryInput" required />
+        </div>
+
+        <!-- Severity -->
+        <div class="form-group severity-group">
+            <label>Severity</label>
+            <div class="options">
+              <input type="radio" name="severity" id="sevCritical" value="Critical" required />
+              <label for="sevCritical">Critical</label>
+          
+              <input type="radio" name="severity" id="sevHigh" value="High" />
+              <label for="sevHigh">High</label>
+          
+              <input type="radio" name="severity" id="sevMedium" value="Medium" />
+              <label for="sevMedium">Medium</label>
+          
+              <input type="radio" name="severity" id="sevLow" value="Low" />
+              <label for="sevLow">Low</label>
+            </div>
+          </div>
+          
+
+          <div class="form-group subject-wrapper">
+            <label for="subject">Subject / Title</label>
+            <div class="subject-container">
+              <i class="fas fa-pencil-alt"></i>
+              <input
+                type="text"
+                id="subject"
+                name="subject"
+                placeholder="Summarize the issue in a few words"
+                required
+              />
+            </div>
+          </div>
+          
+
+
+
+
+          <div class="form-group description-wrapper">
+            <label for="description">Description</label>
+            <div class="description-container">
+              <i class="fas fa-align-left"></i>
+              <textarea
+                id="description"
+                name="description"
+                rows="5"
+                placeholder="Clearly describe the issue, what you expected, and what went wrong..."
+                required
+              ></textarea>
+            </div>
+          </div>
+          
+
+
+
+
+      </section>
+
+      
+
+     
+
+      <!-- SUBMIT -->
+      <section class="section-box">
+        <h3><i class="fas fa-paper-plane"></i> Submit Report</h3>
+        <p class="privacy-note">
+          Your email will only be used to follow up. We’ll keep your data secure and share it only with our product team.
+        </p>
+        <button type="submit" class="btn-submit">Submit Report</button>
+      </section>
+
+    </form>
+  </div>
+
+
+  <!-- JS -->
+  <script src="js/report-issue-user.js"></script>
+
+</body>
+
+
+
+<!-- CONFIRMATION -->
+<div id="confirmation" class="confirmation hidden">
+    <i class="fas fa-check-circle"></i>
+    <div class="confirmation-message">
+      <p>
+        Thank you for your report! Your reference ID is
+        <strong id="refId">#12345</strong>.<br />
+        We aim to resolve high-impact issues within 48 hours.
+      </p>
+      <p class="countdown-text">
+        <em>Returning to dashboard in <span id="countdown">5</span> seconds...</em>
+      </p>
+    </div>
+  </div>
+  
+
+<div id="captchaModal" class="captcha-modal hidden">
+    <div class="captcha-content">
+      <p><strong>Enter the code below to confirm:</strong></p>
+      <canvas id="captchaCanvas" width="150" height="50"></canvas>
+      <input type="text" id="captchaInput" placeholder="Enter code" />
+      <button id="captchaConfirmBtn">Verify</button>
+      <button id="captchaCloseBtn" class="close">Cancel</button>
+    </div>
+  </div>
+
+
+
+
+
+ 
+  
+</html>
